@@ -15,16 +15,24 @@ export const RadioBox = ({
   label,
   onChange,
 }: RadioBoxProps) => (
-  <div className="rounded-lg border border-solid border-zinc-300/55 p-3 ">
+  <div
+    className={`min-h-24 min-w-52 rounded-lg border border-solid p-3 hover:cursor-pointer ${
+      checked ? 'border-orange-950' : 'border-zinc-300/55'
+    }`}
+    onClick={onChange}
+  >
     {icon}
-    <div className="mt-2 flex items-center gap-x-3">
-      <label htmlFor={id}>{label}</label>
+    <div className="pointer-events-none mt-2 flex items-center gap-x-3">
+      <label htmlFor={id} className="max-w-36 break-words text-sm">
+        {label}
+      </label>
       <input
+        className="orange-radio h-4 w-4"
         checked={checked}
         id={id}
         name="source-private-key"
+        readOnly
         type="radio"
-        onChange={onChange}
       />
     </div>
   </div>

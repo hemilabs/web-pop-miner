@@ -5,6 +5,35 @@
 @tailwind utilities;
 
 body {
-  @apply bg-zinc-50;
   font-family: 'Inter', sans-serif;
+}
+
+.orange-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 1px solid #d1d5db;
+  position: relative;
+  cursor: pointer;
+}
+
+.orange-radio:checked {
+  border-color: #ff6c15;
+}
+
+.orange-radio:checked::before {
+  content: '';
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #ff6c15;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

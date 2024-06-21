@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 const CopyIcon = () => (
   <svg fill="none" height={16} width={16} xmlns="http://www.w3.org/2000/svg">
     <path
@@ -20,21 +22,80 @@ const ViewTextIcon = () => (
 )
 
 type Props = {
+  enableCopyToClipboard?: boolean
+  enableEditing?: boolean
   placeholder?: string
   text: string
   title: string
+  onTextChange?: (text: string) => void
 }
 
-export const StringViewer = function ({ text, title, placeholder }: Props) {
+export const StringViewer = function ({
+  text,
+  title,
+  placeholder,
+  enableCopyToClipboard = false,
+  enableEditing = false,
+  onTextChange,
+}: Props) {
+  const [isVisible, setIsVisible] = useState(true)
+
+  const handleToggleVisibility = () => {
+    setIsVisible(!isVisible)
+  }
+
+  const handleCopyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(text)
+      // Here we can add a toast notification
+      // to inform the user that the text was copied
+      // to the clipboard
+      console.log('Copied!')
+    } catch (err) {
+      // Here we can add a toast notification
+      // to inform the user that the text could not be copied
+      // to the clipboard
+      console.log('Failed to copy: ', err)
+    }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onTextChange) {
+      onTextChange(e.target.value)
+    }
+  }
+
   return (
     <div className="flex w-full flex-col gap-y-1 rounded-lg bg-neutral-100 p-2">
-      <span>{title}</span>
-      <div className="flex w-full flex-shrink items-center gap-x-3 bg-white p-2 text-sm font-medium leading-normal">
-        <span className="overflow-x-hidden text-ellipsis whitespace-nowrap">
-          {text || placeholder}
-        </span>
-        <ViewTextIcon />
-        <CopyIcon />
+      <span className="text-base text-neutral-600">{title}</span>
+      <div className="flex min-h-11 w-full flex-shrink items-center justify-between gap-x-3 rounded-lg border border-solid bg-white p-2 text-sm font-medium leading-normal">
+        {enableEditing ? (
+          <input
+            type={isVisible ? 'text' : 'password'}
+            value={text}
+            onChange={handleChange}
+            placeholder={placeholder}
+            className="flex-grow border-none text-base text-neutral-950 outline-none"
+          />
+        ) : (
+          <span
+            className={`text-base ${
+              !text ? 'text-neutral-500' : 'text-neutral-950'
+            } flex-grow`}
+          >
+            {!text ? placeholder : isVisible ? text : '•'.repeat(text.length)}
+          </span>
+        )}
+        <div className="flex items-center gap-x-3">
+          <div onClick={handleToggleVisibility} className="cursor-pointer">
+            <ViewTextIcon />
+          </div>
+          {enableCopyToClipboard && (
+            <div onClick={handleCopyToClipboard} className="cursor-pointer">
+              <CopyIcon />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
