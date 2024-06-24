@@ -15,21 +15,25 @@ const HemiLogo = () => (
 )
 
 const TestnetLabel = () => (
-  <div className="solid flex items-center justify-center rounded-full border border-orange-200/55 bg-orange-50 px-3 py-px text-base font-medium leading-normal text-orange-950">
+  <div className="solid flex items-center justify-center rounded-full border border-orange-200/55 bg-orange-50 px-3 py-1 text-base font-medium leading-normal text-orange-950">
     <span>PoP Miner - Testnet</span>
   </div>
 )
 
 export const Header = function () {
   return (
-    <header className="grid grid-cols-3-column-layout items-center">
+    <header className="flex items-center justify-between">
       <div className="flex items-center gap-x-4">
         <div className="h-10 w-28">
           <HemiLogo />
         </div>
         <TestnetLabel />
       </div>
-      <Steps />
+      <div className="flex flex-grow justify-center">
+        <div className="hidden items-center md:flex">
+          <Steps />
+        </div>
+      </div>
     </header>
   )
 }
