@@ -22,7 +22,7 @@ const TestnetLabel = () => (
 
 export const Header = function () {
   return (
-    <header className="flex items-center justify-between">
+    <header className="mx-4 flex items-center justify-between p-4 md:mx-20">
       <div className="flex items-center gap-x-4">
         <div className="h-10 w-28">
           <HemiLogo />

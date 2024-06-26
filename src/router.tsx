@@ -1,6 +1,6 @@
 import { Layout } from 'components/layout'
 import { ExplorerPage } from 'pages/explorer'
-import { FundAddressPage } from 'pages/fund'
+import { FundPage } from 'pages/fund/page'
 import { ManagePage } from 'pages/manage/page'
 import {
   createBrowserRouter,
@@ -13,7 +13,7 @@ const routes = createRoutesFromElements(
     {/* Step 1 */}
     <Route path="manage" element={<ManagePage />} />
     {/* Step 2 */}
-    <Route path="fund" element={<FundAddressPage />} />
+    <Route path="fund" element={<FundPage />} />
     {/* Step 3 */}
     <Route path="explorer" element={<ExplorerPage />} />
   </Route>,
