@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "popm-web"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "pop-miner.letshamsterdance.xyz"
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: "popm-web"
+                port:
+                  name: "http"
+  tls:
+    - hosts: [ "pop-miner.letshamsterdance.xyz" ]
+      secretName: "popm-web-tls"
