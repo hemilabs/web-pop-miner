@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: "docker-${{ github.event.number || github.ref }}"
+  group: "staging-${{ github.event.number || github.ref }}"
   cancel-in-progress: true
 
 env:
