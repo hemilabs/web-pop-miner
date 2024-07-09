@@ -4,24 +4,36 @@ import { AddressFunded } from './_components/addressFunded'
 import { usePopminerContext } from 'context/popminerContext'
 import { useNavigate } from 'react-router-dom'
 import { EstimatedCostsRewards } from './_components/estimatedCostsRewards'
-import { useBalance } from './_hooks/useBalance'
+import { useBtcBalance } from 'hooks/useBtcBalance'
+import { Satoshi } from 'types/Satoshi'
+import { useEffect } from 'react'
 
-const minSatoshis = 200000 // 0.002 tBTC -> 200,000 Satoshis
+const minSatoshis: Satoshi = import.meta.env.VITE_MIN_SATOSHIS || 200000 // 0.002 tBTC -> 200,000 Satoshis
 
 export const FundPage = function () {
   const { state } = usePopminerContext()
   const navigate = useNavigate()
 
-  const { data, isFetching } = useBalance(state.publicAddress, minSatoshis)
+  const { totalBalance, isLoading } = useBtcBalance(
+    state.bitcoinPublicKeyHash,
+    minSatoshis,
+    0,
+  )
 
-  const isAddressFunded = !isFetching && data.confirmedBalance >= minSatoshis
-  const isAddressPending = isFetching || data.confirmedBalance < minSatoshis
+  const isAddressFunded = !isLoading && (totalBalance ?? 0) >= minSatoshis
+  const isAddressPending = isLoading || (totalBalance ?? 0) < minSatoshis
 
   const handleContinue = () => {
     if (isAddressFunded) {
       navigate('/explorer')
     }
   }
+
+  useEffect(() => {
+    if (!state.bitcoinPublicKeyHash) {
+      navigate('/manage')
+    }
+  }, [state.bitcoinPublicKeyHash])
 
   return (
     <div className="flex flex-col pt-8">
@@ -45,8 +57,9 @@ export const FundPage = function () {
               </p>
               <div className="mt-4">
                 <StringViewer
-                  text={state.publicAddress}
+                  text={state.bitcoinPublicKeyHash}
                   title="Bitcoin Address"
+                  enableCopyToClipboard={true}
                 />
               </div>
               {isAddressPending && <WaitingAddress />}

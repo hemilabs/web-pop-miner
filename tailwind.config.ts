@@ -4,6 +4,15 @@ const config: Config = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      animation: {
+        blink: 'blink 1.25s infinite',
+      },
+      backgroundColor: {
+        'white-opacity-24': 'rgba(255, 255, 255, 0.24)',
+      },
+      boxShadow: {
+        'custom-inset': 'inset 0px 0px 4px 0px rgba(255, 255, 255, 0.48)',
+      },
       colors: {
         orange: {
           950: '#FF6C15',
@@ -24,6 +33,12 @@ const config: Config = {
       },
       gridTemplateColumns: {
         '3-column-layout': '1fr 680px 1fr',
+      },
+      keyframes: {
+        blink: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.5' },
+        },
       },
     },
   },

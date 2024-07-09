@@ -1,5 +1,5 @@
 import { Layout } from 'components/layout'
-import { ExplorerPage } from 'pages/explorer'
+import { ExplorerPage } from 'pages/explorer/page'
 import { FundPage } from 'pages/fund/page'
 import { ManagePage } from 'pages/manage/page'
 import {
