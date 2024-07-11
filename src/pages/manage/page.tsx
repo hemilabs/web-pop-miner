@@ -88,13 +88,15 @@ export const ManagePage = function () {
   }
 
   useEffect(() => {
-    const savedKeyData = localStorage.getItem('keyData')
-    if (savedKeyData) {
-      setState(JSON.parse(savedKeyData))
-    } else {
-      updateKeyState(generateNewKey())
+    if (state.wasmInitialized) {
+      const savedKeyData = localStorage.getItem('keyData')
+      if (savedKeyData) {
+        setState(JSON.parse(savedKeyData))
+      } else {
+        updateKeyState(generateNewKey())
+      }
     }
-  }, [])
+  }, [state.wasmInitialized])
 
   useEffect(() => {
     if (debouncedBitcoinPrivateKey && !state.validPrivateKey) {
