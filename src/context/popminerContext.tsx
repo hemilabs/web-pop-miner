@@ -1,19 +1,38 @@
-import { ReactNode, createContext, useContext, useState } from 'react'
+import { init } from '@hemilabs/pop-miner'
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import wasmURL from '../assets/popminer.wasm?url'
+import { Toast, ToastType } from 'utils/toast'
 
 /**
  * Represents the interface for the Popminer context state.
- * - active: boolean
- * - publicAddress: string
  */
 interface PopminerContextState {
   active: boolean
-  publicAddress: string
+  network: string
+  bitcoinPrivateKey: string
+  bitcoinPublicKey: string
+  bitcoinPublicKeyHash: string
+  hemiAddress: string
+  validPrivateKey: boolean
+  wasmInitialized: boolean
 }
 
 // Default state for the context
 const defaultValue: PopminerContextState = {
   active: false,
-  publicAddress: 'mfzM4ZknpUzsrgYTgR48Wqo6PD34ChsBR4',
+  network: '',
+  bitcoinPrivateKey: '',
+  bitcoinPublicKey: '',
+  bitcoinPublicKeyHash: '',
+  hemiAddress: '',
+  validPrivateKey: false,
+  wasmInitialized: false,
 }
 
 // Creating the context with a default value
@@ -32,6 +51,21 @@ interface PopminerProviderProps {
 // Implementing the Provider
 export const PopminerProvider = ({ children }: PopminerProviderProps) => {
   const [state, setState] = useState<PopminerContextState>(defaultValue)
+
+  useEffect(() => {
+    init({ wasmURL })
+      .then(() => {
+        console.log('Wasm initialized')
+        setState(prev => ({ ...prev, wasmInitialized: true }))
+      })
+      .catch(error => {
+        console.error('Error initializing Wasm', error)
+        Toast({
+          message: `Failed to initialise PoP miner: ${error.message}`,
+          type: ToastType.Error,
+        })
+      })
+  }, [])
 
   return (
     <PopminerContext.Provider value={{ state, setState }}>

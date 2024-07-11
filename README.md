@@ -1,4 +1,4 @@
-# Web pop miner
+# Web PoP miner
 
 To start locally, run
 

@@ -1,4 +1,7 @@
+import { usePopminerContext } from 'context/popminerContext'
+import { PlayButton } from './playButton'
 import { Steps } from './steps'
+import { Link, useLocation } from 'react-router-dom'
 
 const HemiLogo = () => (
   <svg viewBox="0 0 1043.5 324.5" xmlns="http://www.w3.org/2000/svg">
@@ -21,12 +24,21 @@ const TestnetLabel = () => (
 )
 
 export const Header = function () {
+  const { state, setState } = usePopminerContext()
+  const { pathname } = useLocation()
+
+  const handlePlay = () => {
+    setState(prevState => ({ ...prevState, active: !prevState.active }))
+  }
+
   return (
     <header className="mx-4 flex items-center justify-between p-4 md:mx-20">
       <div className="flex items-center gap-x-4">
-        <div className="h-10 w-28">
-          <HemiLogo />
-        </div>
+        <Link to="/manage">
+          <div className="h-10 w-28">
+            <HemiLogo />
+          </div>
+        </Link>
         <TestnetLabel />
       </div>
       <div className="flex flex-grow justify-center">
@@ -34,6 +46,13 @@ export const Header = function () {
           <Steps />
         </div>
       </div>
+      {pathname === '/explorer' && (
+        <div className="flex flex-grow justify-end">
+          <div className="hidden items-center md:flex">
+            <PlayButton onClick={handlePlay} isPlaying={state.active} />
+          </div>
+        </div>
+      )}
     </header>
   )
 }
