@@ -11,7 +11,7 @@ on:
 
 concurrency:
   group: "staging-${{ github.event.number || github.ref }}"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   DOCKER_IMAGE_NAME: "popm-web"
