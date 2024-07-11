@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "popm-web"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "popm-web"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "popm-web"
+    spec:
+      containers:
+        - name: "popm-web"
+          image: "hemilabs/popm-web"
+          imagePullPolicy: "IfNotPresent"
+          resources:
+            requests:
+              memory: 64Mi
+            limits:
+              memory: 128Mi
+          ports:
+            - containerPort: 8080
