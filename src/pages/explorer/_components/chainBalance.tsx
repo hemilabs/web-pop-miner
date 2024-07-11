@@ -52,7 +52,7 @@ export const ChainBalance = ({
         )}
         <span className="ml-2 text-base text-neutral-500">{chain}</span>
       </div>
-      <div className="mt-4 flex items-center justify-between rounded border border-solid border-slate-100 bg-neutral-50 p-2 text-sm text-neutral-600">
+      <div className="mt-4 flex items-center justify-between break-all rounded border border-solid border-slate-100 bg-neutral-50 p-2 text-sm text-neutral-600">
         <span>{address}</span>
         <div className="flex items-center space-x-2">
           <div
