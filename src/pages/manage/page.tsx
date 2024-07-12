@@ -91,7 +91,10 @@ export const ManagePage = function () {
     if (state.wasmInitialized) {
       const savedKeyData = localStorage.getItem('keyData')
       if (savedKeyData) {
-        setState(JSON.parse(savedKeyData))
+        setState(prevState => ({
+          ...prevState,
+          ...JSON.parse(savedKeyData),
+        }))
       } else {
         updateKeyState(generateNewKey())
       }
