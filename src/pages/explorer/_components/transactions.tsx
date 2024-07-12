@@ -9,8 +9,10 @@ type DateTime = {
   time: string
 }
 
-const convertTimestampToDateTime = (timestamp: number): DateTime => {
-  const date = new Date(timestamp * 1000)
+const convertTimestampToDateTime = (
+  timestamp: number | undefined,
+): DateTime => {
+  const date = new Date((timestamp ?? 0) * 1000)
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long',
@@ -63,7 +65,7 @@ export const TransactionTable = ({ transactions }: Props) => {
           <tbody>
             {transactions?.map(({ txid, status, cost }) => {
               const { date, time } = convertTimestampToDateTime(
-                status.confirmed ? status.block_time : Date.now(),
+                status.confirmed ? status.blockTime : Date.now(),
               )
               const txLink = `${
                 import.meta.env.VITE_PUBLIC_MEMPOOL_API_URL
@@ -80,7 +82,7 @@ export const TransactionTable = ({ transactions }: Props) => {
                             <Skeleton width={70} height={20} />
                           ) : (
                             <span className="text-neutral-500">
-                              {status.block_height}
+                              {status.blockHeight}
                             </span>
                           )}
                           <span className="text-neutral-950">-</span>

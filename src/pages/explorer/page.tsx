@@ -86,15 +86,12 @@ export const ExplorerPage = () => {
       if (match) {
         const txHash = match[1]
         console.log('txHash by event listener', txHash)
-        // Delay the execution of setHashes by 5 seconds
-        setTimeout(() => {
-          setHashes(prevHashes => {
-            if (!prevHashes.includes(txHash)) {
-              return [...prevHashes, txHash]
-            }
-            return prevHashes
-          })
-        }, 5 * 1000)
+        setHashes(prevHashes => {
+          if (!prevHashes.includes(txHash)) {
+            return [...prevHashes, txHash]
+          }
+          return prevHashes
+        })
       }
     }
 
