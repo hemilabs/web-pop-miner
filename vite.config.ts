@@ -6,4 +6,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
   assetsInclude: ['**/*.wasm'],
   plugins: [react(), tsconfigPaths()],
+  define: {
+    APP_VERSION: JSON.stringify(process.env.npm_package_version),
+  },
 })
