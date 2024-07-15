@@ -2,11 +2,11 @@
 # Use of this source code is governed by the MIT License,
 # which can be found in the LICENSE file.
 
-# GitHub Actions workflow to build and push Docker images.
+# GitHub Actions workflow to deploy the Web PoP Miner to the staging environment.
 name: "Staging"
 on:
   push:
-    branches: [ "staging" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 concurrency:
