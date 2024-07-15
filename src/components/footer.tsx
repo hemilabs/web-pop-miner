@@ -1,8 +1,36 @@
+import { useWasmVersion } from '../hooks/useWasmVersion'
+
 export const Footer = () => (
   <footer className="flex w-full items-center justify-between p-4 text-sm font-medium text-zinc-500">
     <span className="ml-4 md:ml-16">
-      Hemi Labs ©{new Date().getFullYear()}
+      © {new Date().getFullYear()} Hemi Labs, Inc.
     </span>
-    <span className="mr-4 md:mr-16">PoP Miner</span>
+    <div className="mr-4 flex flex-col text-right md:mr-16">
+      <span>PoP Miner v{APP_VERSION}</span>
+      <small>
+        <WasmVersion />
+      </small>
+    </div>
   </footer>
 )
+
+const WasmVersion = () => {
+  const { data, isLoading } = useWasmVersion()
+
+  if (isLoading || !data) {
+    return <span>Loading WASM...</span>
+  }
+
+  return (
+    <span>
+      WASM v{data.version}{' '}
+      <a
+        href={`https://github.com/hemilabs/heminetwork/commit/${data.gitCommit}`}
+        target="_blank"
+        rel="noopener external"
+      >
+        ({data.gitCommit.substring(0, 7)})
+      </a>
+    </span>
+  )
+}
