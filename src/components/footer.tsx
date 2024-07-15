@@ -1,6 +1,4 @@
-import { usePopminerContext } from '../context/popminerContext'
-import { useEffect, useState } from 'react'
-import { version, VersionResult } from '@hemilabs/pop-miner'
+import { useWasmVersion } from '../hooks/useWasmVersion'
 
 export const Footer = () => (
   <footer className="flex w-full items-center justify-between p-4 text-sm font-medium text-zinc-500">
@@ -17,28 +15,21 @@ export const Footer = () => (
 )
 
 const WasmVersion = () => {
-  const { state } = usePopminerContext()
-  const [wasmVersion, setWasmVersion] = useState<VersionResult>()
+  const { data, isLoading } = useWasmVersion()
 
-  useEffect(() => {
-    if (state.wasmInitialized) {
-      version().then(setWasmVersion)
-    }
-  }, [state.wasmInitialized])
-
-  if (!wasmVersion) {
-    return null
+  if (isLoading || !data) {
+    return <span>Loading WASM...</span>
   }
 
   return (
     <span>
-      WASM v{wasmVersion.version}
+      WASM v{data.version}{' '}
       <a
-        href={`https://github.com/hemilabs/heminetwork/commit/${wasmVersion.gitCommit}`}
+        href={`https://github.com/hemilabs/heminetwork/commit/${data.gitCommit}`}
         target="_blank"
         rel="noopener external"
       >
-        ({wasmVersion.gitCommit})
+        ({data.gitCommit.substring(0, 7)})
       </a>
     </span>
   )
