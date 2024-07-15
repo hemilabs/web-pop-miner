@@ -8,5 +8,8 @@ export const useWasmVersion = (): UseQueryResult<VersionResult> => {
     enabled: state.wasmInitialized,
     queryFn: () => version(),
     queryKey: ['wasmVersion'],
+    meta: {
+      errorMessage: 'Failed to fetch WASM version',
+    },
   })
 }
