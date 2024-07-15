@@ -1,7 +1,7 @@
 import { useWasmVersion } from '../hooks/useWasmVersion'
 
 export const Footer = () => (
-  <footer className="flex w-full items-center justify-between p-4 text-sm font-medium text-zinc-500">
+  <footer className="flex w-full items-center justify-between px-4 py-3 text-sm font-medium text-zinc-500">
     <span className="ml-4 md:ml-16">
       © {new Date().getFullYear()} Hemi Labs, Inc.
     </span>
