@@ -111,7 +111,7 @@ export const ExplorerPage = () => {
     <div className="flex w-full flex-col items-center justify-center space-y-4">
       <div className="flex w-full max-w-7xl space-x-4 px-4">
         <ChainBalance
-          title="HEMI Balance"
+          title="Hemi Balance"
           chain={Chain.HemiTestnet}
           address={state.hemiAddress}
           explorerUrl={import.meta.env.VITE_HEMI_EXPLORER_URL}
