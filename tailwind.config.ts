@@ -10,8 +10,13 @@ const config: Config = {
       backgroundColor: {
         'white-opacity-24': 'rgba(255, 255, 255, 0.24)',
       },
+      backgroundImage: {
+        'custom-intro-mobile-img':
+          "linear-gradient(0deg, rgba(247, 247, 247, 0.00) 0.06%, #F7F7F7 56.06%), url('/images/miningFlowCoverMobile.webp')",
+      },
       boxShadow: {
         'custom-inset': 'inset 0px 0px 4px 0px rgba(255, 255, 255, 0.48)',
+        'custom-intro': '0px 1px 3px 0px rgba(0, 2, 2, 0.08)',
       },
       colors: {
         orange: {
