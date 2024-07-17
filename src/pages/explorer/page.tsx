@@ -20,11 +20,7 @@ export const ExplorerPage = () => {
   const hemiBalance = () =>
     useHemiBalance(state.hemiAddress, balanceFetchIntervelms)
   const btcBalance = () =>
-    useBtcBalance(
-      state.bitcoinPublicKeyHash,
-      minSatoshis,
-      balanceFetchIntervelms,
-    )
+    useBtcBalance(state.bitcoinPubKeyHash, minSatoshis, balanceFetchIntervelms)
   const { transactions } = useGetBtcBlockByTransaction(true, hashes)
 
   /**
@@ -38,7 +34,7 @@ export const ExplorerPage = () => {
     if (state.active && state.wasmInitialized) {
       startPoPMiner({
         network: 'testnet',
-        privateKey: state.bitcoinPrivateKey,
+        privateKey: state.privateKey,
         staticFee: 50,
         logLevel: 'info',
       })
@@ -102,10 +98,10 @@ export const ExplorerPage = () => {
   }, [])
 
   useEffect(() => {
-    if (!state.bitcoinPublicKeyHash || !state.hemiAddress) {
+    if (!state.bitcoinPubKeyHash || !state.hemiAddress) {
       navigate('/manage')
     }
-  }, [state.bitcoinPublicKeyHash, state.hemiAddress])
+  }, [state.bitcoinPubKeyHash, state.hemiAddress])
 
   return (
     <div className="flex w-full flex-col items-center justify-center space-y-4">
@@ -120,7 +116,7 @@ export const ExplorerPage = () => {
         <ChainBalance
           title="Bitcoin Balance"
           chain={Chain.BitcoinTestnet}
-          address={state.bitcoinPublicKeyHash}
+          address={state.bitcoinPubKeyHash}
           explorerUrl={import.meta.env.VITE_PUBLIC_MEMPOOL_API_URL}
           useBalance={btcBalance}
         />
