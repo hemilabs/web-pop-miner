@@ -47,7 +47,7 @@ export const FundPage = function () {
                     <span className="mr-1 text-xl">0.002</span>
                     <span className="text-xl text-neutral-500">tBTC</span>
                   </span>
-                  <span>Bitcoin to this address and start Mining</span>
+                  <span>to this address to start mining</span>
                 </h2>
               </div>
               <p className="text-base leading-normal text-neutral-500">
