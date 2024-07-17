@@ -3,7 +3,6 @@ import { WaitingAddress } from './_components/waitingAddress'
 import { AddressFunded } from './_components/addressFunded'
 import { usePopminerContext } from 'context/popminerContext'
 import { useNavigate } from 'react-router-dom'
-import { EstimatedCostsRewards } from './_components/estimatedCostsRewards'
 import { useBtcBalance } from 'hooks/useBtcBalance'
 import { Satoshi } from 'types/Satoshi'
 import { useEffect } from 'react'
@@ -81,7 +80,6 @@ export const FundPage = function () {
           </div>
         </div>
       </div>
-      <EstimatedCostsRewards />
     </div>
   )
 }
