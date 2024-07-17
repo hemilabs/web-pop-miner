@@ -145,25 +145,24 @@ export const ManagePage = function () {
         <div className="rounded-3xl border border-solid border-slate-100 bg-white p-6 md:p-9">
           <div className="flex w-full flex-col gap-y-4 bg-white">
             <h2 className="text-2xl font-medium leading-tight text-neutral-950">
-              Input or generate your Private Key...
+              Input or generate your private key
             </h2>
             <p className="text-base leading-normal text-neutral-500">
-              Choose between generating a new Private Key or inputting an
-              existing one.
+              Generate a new private key or select to input an existing one.
             </p>
             <div className="flex items-center justify-center gap-x-5">
               <RadioBox
                 checked={sourceOfPrivateKey === 'generate'}
                 icon={<GeneratePkIcon />}
                 id="generate"
-                label="Generate a Private Key"
+                label="Generate a private key"
                 onChange={() => handleSourceChange('generate')}
               />
               <RadioBox
                 checked={sourceOfPrivateKey === 'import'}
                 icon={<ImportPkIcon />}
                 id="import"
-                label="Input your own Private Key"
+                label="Input your own private key"
                 onChange={() => handleSourceChange('import')}
               />
             </div>
