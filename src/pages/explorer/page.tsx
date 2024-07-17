@@ -53,7 +53,7 @@ export const ExplorerPage = () => {
     if (!state.active && state.wasmInitialized) {
       stopPoPMiner()
         .then(() =>
-          Toast({ message: 'PoP miner inactive', type: ToastType.Success }),
+          Toast({ message: 'PoP miner inactive', type: ToastType.Warning }),
         )
         .catch(err => {
           /**
