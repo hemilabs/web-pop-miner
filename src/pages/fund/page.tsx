@@ -14,7 +14,7 @@ export const FundPage = function () {
   const navigate = useNavigate()
 
   const { totalBalance, isLoading } = useBtcBalance(
-    state.bitcoinPublicKeyHash,
+    state.bitcoinPubKeyHash,
     minSatoshis,
     0,
   )
@@ -29,10 +29,10 @@ export const FundPage = function () {
   }
 
   useEffect(() => {
-    if (!state.bitcoinPublicKeyHash) {
+    if (!state.bitcoinPubKeyHash) {
       navigate('/manage')
     }
-  }, [state.bitcoinPublicKeyHash])
+  }, [state.bitcoinPubKeyHash])
 
   return (
     <div className="flex flex-col pt-8">
@@ -56,7 +56,7 @@ export const FundPage = function () {
               </p>
               <div className="mt-4">
                 <StringViewer
-                  text={state.bitcoinPublicKeyHash}
+                  text={state.bitcoinPubKeyHash}
                   title="Bitcoin Address"
                   enableCopyToClipboard={true}
                 />

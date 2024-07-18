@@ -33,17 +33,8 @@ const PrivateKey = ({ source, handleChange, privateKey }: PrivateKeyProps) =>
     />
   )
 
-const initAndExtractKeyData = async (keyAction: () => Promise<KeyResult>) => {
-  const { ethereumAddress, network, privateKey, publicKey, publicKeyHash } =
-    await keyAction()
-
-  return {
-    hemiAddress: ethereumAddress,
-    network,
-    bitcoinPrivateKey: privateKey,
-    bitcoinPublicKey: publicKey,
-    bitcoinPublicKeyHash: publicKeyHash,
-  }
+const initAndExtractKeyData = (keyAction: () => Promise<KeyResult>) => {
+  return keyAction()
 }
 
 const generateNewKey = async () => {
@@ -61,7 +52,7 @@ export const ManagePage = function () {
   const { state, setState } = usePopminerContext()
   const [sourceOfPrivateKey, setSourceOfPrivateKey] =
     useState<SourceOfPrivateKeyType>('generate')
-  const [debouncedBitcoinPrivateKey] = useDebounce(state.bitcoinPrivateKey, 400)
+  const [debouncedPrivateKey] = useDebounce(state.privateKey, 400)
 
   const updateValidPrivateKeyState = (valid: boolean) => {
     setState(prevState => ({
@@ -87,13 +78,39 @@ export const ManagePage = function () {
     }
   }
 
+  const migrateKeyData = (keyData: any) => {
+    return {
+      ...keyData,
+      privateKey: keyData.bitcoinPrivateKey || keyData.privateKey,
+      publicKey: keyData.bitcoinPublicKey || keyData.publicKey,
+      bitcoinPubKeyHash:
+        keyData.bitcoinPublicKeyHash || keyData.bitcoinPubKeyHash,
+    }
+  }
+
+  const cleanOldKeyData = (keyData: any) => {
+    const {
+      bitcoinPrivateKey,
+      bitcoinPublicKey,
+      bitcoinPublicKeyHash,
+      ...cleanedKeyData
+    } = keyData
+    return cleanedKeyData
+  }
+
   useEffect(() => {
     if (state.wasmInitialized) {
       const savedKeyData = localStorage.getItem('keyData')
       if (savedKeyData) {
+        let parsedKeyData = JSON.parse(savedKeyData)
+
+        // Migrate and clean the key data
+        parsedKeyData = migrateKeyData(parsedKeyData)
+        parsedKeyData = cleanOldKeyData(parsedKeyData)
+
         setState(prevState => ({
           ...prevState,
-          ...JSON.parse(savedKeyData),
+          ...parsedKeyData,
         }))
       } else {
         updateKeyState(generateNewKey())
@@ -102,14 +119,14 @@ export const ManagePage = function () {
   }, [state.wasmInitialized])
 
   useEffect(() => {
-    if (debouncedBitcoinPrivateKey && !state.validPrivateKey) {
+    if (debouncedPrivateKey && !state.validPrivateKey) {
       if (sourceOfPrivateKey === 'generate') {
         updateKeyState(generateNewKey())
       } else {
-        updateKeyState(parseNewKey(state.bitcoinPrivateKey))
+        updateKeyState(parseNewKey(state.privateKey))
       }
     }
-  }, [debouncedBitcoinPrivateKey, sourceOfPrivateKey])
+  }, [debouncedPrivateKey, sourceOfPrivateKey])
 
   const handleSourceChange = async (source: SourceOfPrivateKeyType) => {
     setSourceOfPrivateKey(source)
@@ -119,7 +136,7 @@ export const ManagePage = function () {
     } else {
       setState(prevState => ({
         ...prevState,
-        bitcoinPrivateKey: '',
+        privateKey: '',
       }))
     }
   }
@@ -127,13 +144,13 @@ export const ManagePage = function () {
   const handlePrivateKeyChange = (text: string) => {
     setState(prevState => ({
       ...prevState,
-      bitcoinPrivateKey: text,
+      privateKey: text,
     }))
     updateValidPrivateKeyState(false)
   }
 
   const handleContinue = () => {
-    if (state.bitcoinPrivateKey && state.validPrivateKey) {
+    if (state.privateKey && state.validPrivateKey) {
       localStorage.setItem('keyData', JSON.stringify(state))
       navigate('/fund')
     }
@@ -170,14 +187,14 @@ export const ManagePage = function () {
             <PrivateKey
               handleChange={handlePrivateKeyChange}
               source={sourceOfPrivateKey}
-              privateKey={state.bitcoinPrivateKey}
+              privateKey={state.privateKey}
             />
             <div className="mt-12">
               <button
                 onClick={handleContinue}
                 className={`h-14 w-full rounded-xl bg-orange-950 text-lg text-white 
               ${
-                state.validPrivateKey && state.bitcoinPrivateKey
+                state.validPrivateKey && state.privateKey
                   ? 'cursor-pointer bg-opacity-90 hover:bg-opacity-100'
                   : 'cursor-default bg-opacity-40'
               }`}

@@ -18,14 +18,14 @@ export const RadioBox = ({
   onChange,
 }: RadioBoxProps) => (
   <div
-    className={`min-h-24 w-full rounded-lg border border-solid p-3 hover:cursor-pointer ${
+    className={`min-h-24 w-full min-w-72 rounded-lg border border-solid p-3 hover:cursor-pointer ${
       checked ? 'border-orange-950' : 'border-zinc-300/55'
     } ${disabled ? 'pointer-events-none opacity-50' : 'hover:cursor-pointer'}`}
     onClick={onChange}
   >
     {icon}
     <div className="pointer-events-none mt-2 flex items-center justify-between pr-3">
-      <label htmlFor={id} className="max-w-36 break-words text-sm">
+      <label htmlFor={id} className="max-w-40 break-words text-sm">
         {label}
       </label>
       <input

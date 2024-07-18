@@ -15,9 +15,10 @@ import { Toast, ToastType } from 'utils/toast'
 interface PopminerContextState {
   active: boolean
   network: string
-  bitcoinPrivateKey: string
-  bitcoinPublicKey: string
-  bitcoinPublicKeyHash: string
+  privateKey: string
+  publicKey: string
+  bitcoinPubKeyHash: string
+  bitcoinScriptHash: string
   hemiAddress: string
   validPrivateKey: boolean
   wasmInitialized: boolean
@@ -27,9 +28,10 @@ interface PopminerContextState {
 const defaultValue: PopminerContextState = {
   active: false,
   network: '',
-  bitcoinPrivateKey: '',
-  bitcoinPublicKey: '',
-  bitcoinPublicKeyHash: '',
+  privateKey: '',
+  publicKey: '',
+  bitcoinPubKeyHash: '',
+  bitcoinScriptHash: '',
   hemiAddress: '',
   validPrivateKey: false,
   wasmInitialized: false,
