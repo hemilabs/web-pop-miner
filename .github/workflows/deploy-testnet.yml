@@ -29,6 +29,8 @@ jobs:
 
       - name: "Retrieve build data"
         id: "data"
+        env:
+          RAW_VERSION: "${{ github.ref_name }}"
         run: |
           VERSION=$(echo "$RAW_VERSION" | sed -e 's/^v//')
           TAG=$(echo "$RAW_VERSION" | sed -E 's/^([^v])/v\1/g')
