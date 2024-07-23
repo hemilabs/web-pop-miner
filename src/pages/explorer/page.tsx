@@ -95,6 +95,21 @@ export const ExplorerPage = () => {
       if (state.wasmInitialized) {
         removeEventListener('transactionBroadcast', handleEvent)
           .then(() => console.log('transactionBroadcast event removed'))
+          .then(() => {
+            checkIfMinerIsRunning().then(isRunning => {
+              if (isRunning) {
+                stopPoPMiner()
+                  .then(() => {
+                    setState(prevState => ({ ...prevState, active: false }))
+                    Toast({
+                      message: 'PoP miner inactive',
+                      type: ToastType.Warning,
+                    })
+                  })
+                  .catch(err => handleError('Error stopping PoP miner', err))
+              }
+            })
+          })
           .catch(err =>
             handleError('Error removing transactionBroadcast event', err),
           )
