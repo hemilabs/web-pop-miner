@@ -8,7 +8,7 @@ import { KeyResult, generateKey, parseKey } from '@hemilabs/pop-miner'
 import { usePopminerContext } from 'context/popminerContext'
 import { useNavigate } from 'react-router-dom'
 import { useDebounce } from 'use-debounce'
-import { Toast, ToastType } from 'utils/toast'
+import { handleError } from 'utils/handleError'
 
 interface PrivateKeyProps {
   source: SourceOfPrivateKeyType
@@ -70,10 +70,7 @@ export const ManagePage = function () {
       }))
       updateValidPrivateKeyState(true)
     } catch (error) {
-      Toast({
-        message: `Error: ${(error as Error).message}`,
-        type: ToastType.Error,
-      })
+      handleError('Error', error as Error)
       updateValidPrivateKeyState(false)
     }
   }
