@@ -18,17 +18,26 @@ jobs:
   docker:
     name: "Docker"
     uses: hemilabs/actions/.github/workflows/docker.yml@main
+    permissions:
+      contents: read
+      packages: write # Needed to push to the GitHub Container Registry
     with:
       version: "${{ github.sha }}"
+      dockerhub: true
       tags: |
         hemilabs/popm-web:${{ github.sha }}
         ghcr.io/hemilabs/popm-web:${{ github.sha }}
+    secrets:
+      DOCKERHUB_USERNAME: "${{ secrets.DOCKERHUB_USERNAME }}"
+      DOCKERHUB_PASSWORD: "${{ secrets.DOCKERHUB_TOKEN }}"
 
   # Deploy to Kubernetes cluster
   deploy:
     name: "Deploy to staging"
     uses: hemilabs/actions/.github/workflows/deploy-kustomize.yml@main
     needs: [ "docker" ]
+    permissions:
+      contents: read
     with:
       namespace: "popm-web"
       kustomize: "./kubernetes/kustomize/overlays/staging/"
