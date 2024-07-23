@@ -19,12 +19,14 @@ interface PrivateKeyProps {
 const PrivateKey = ({ source, handleChange, privateKey }: PrivateKeyProps) =>
   source === 'generate' ? (
     <StringViewer
+      defaultIsVisible={false}
       enableCopyToClipboard={true}
       text={privateKey}
       title="Private Key"
     />
   ) : (
     <StringViewer
+      defaultIsVisible={false}
       enableEditing={true}
       onTextChange={handleChange}
       placeholder="Paste your Private Key here.."
@@ -97,21 +99,7 @@ export const ManagePage = function () {
 
   useEffect(() => {
     if (state.wasmInitialized) {
-      const savedKeyData = localStorage.getItem('keyData')
-      if (savedKeyData) {
-        let parsedKeyData = JSON.parse(savedKeyData)
-
-        // Migrate and clean the key data
-        parsedKeyData = migrateKeyData(parsedKeyData)
-        parsedKeyData = cleanOldKeyData(parsedKeyData)
-
-        setState(prevState => ({
-          ...prevState,
-          ...parsedKeyData,
-        }))
-      } else {
-        updateKeyState(generateNewKey())
-      }
+      updateKeyState(generateNewKey())
     }
   }, [state.wasmInitialized])
 
@@ -148,7 +136,6 @@ export const ManagePage = function () {
 
   const handleContinue = () => {
     if (state.privateKey && state.validPrivateKey) {
-      localStorage.setItem('keyData', JSON.stringify(state))
       navigate('/fund')
     }
   }

@@ -12,6 +12,7 @@ const ViewTextIcon = () => (
 )
 
 type Props = {
+  defaultIsVisible?: boolean
   enableCopyToClipboard?: boolean
   enableEditing?: boolean
   placeholder?: string
@@ -24,11 +25,12 @@ export const StringViewer = function ({
   text,
   title,
   placeholder,
+  defaultIsVisible = true,
   enableCopyToClipboard = false,
   enableEditing = false,
   onTextChange,
 }: Props) {
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(defaultIsVisible)
 
   const handleToggleVisibility = () => {
     setIsVisible(!isVisible)
