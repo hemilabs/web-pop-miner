@@ -1,0 +1,40 @@
+# Copyright (c) 2024 Hemi Labs, Inc.
+# Use of this source code is governed by the MIT License,
+# which can be found in the LICENSE file.
+
+# GitHub Actions workflow to deploy the Web PoP Miner to the staging environment.
+name: "Staging"
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+concurrency:
+  group: "staging-deploy-${{ github.event.number || github.ref }}"
+  cancel-in-progress: false
+
+jobs:
+  # Build and push Docker image
+  docker:
+    name: "Docker"
+    uses: hemilabs/actions/.github/workflows/docker.yml@main
+    with:
+      version: "${{ github.sha }}"
+      tags: |
+        hemilabs/popm-web:${{ github.sha }}
+        ghcr.io/hemilabs/popm-web:${{ github.sha }}
+
+  # Deploy to Kubernetes cluster
+  deploy:
+    name: "Deploy to staging"
+    uses: hemilabs/actions/.github/workflows/deploy-kustomize.yml@main
+    needs: [ "docker" ]
+    with:
+      namespace: "popm-web"
+      kustomize: "./kubernetes/kustomize/overlays/staging/"
+      image: "hemilabs/popm-web:${{ github.sha }}"
+      environment-name: "staging"
+      environment-url: "https://pop-miner.letshamsterdance.xyz/"
+    secrets:
+      KUBECONFIG: "${{ secrets.VKE_STAGING_KUBECONFIG }}"
+      KUBECONFIG_CONTEXT: "${{ secrets.VKE_STAGING_KUBECONFIG_CONTEXT }}"
