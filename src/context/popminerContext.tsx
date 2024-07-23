@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react'
 import wasmURL from '../assets/popminer.wasm?url'
-import { Toast, ToastType } from 'utils/toast'
+import { handleError } from 'utils/handleError'
 
 /**
  * Represents the interface for the Popminer context state.
@@ -60,13 +60,7 @@ export const PopminerProvider = ({ children }: PopminerProviderProps) => {
         console.log('Wasm initialized')
         setState(prev => ({ ...prev, wasmInitialized: true }))
       })
-      .catch(error => {
-        console.error('Error initializing Wasm', error)
-        Toast({
-          message: `Failed to initialise PoP miner: ${error.message}`,
-          type: ToastType.Error,
-        })
-      })
+      .catch(error => handleError('Failed to initialize PoP miner:', error))
   }, [])
 
   return (
