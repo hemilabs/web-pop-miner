@@ -23,6 +23,8 @@ jobs:
       packages: write # Needed to push to the GitHub Container Registry
     with:
       version: "${{ github.sha }}"
+      context: "."
+      file: "./Dockerfile"
       dockerhub: true
       tags: |
         hemilabs/popm-web:${{ github.sha }}

@@ -52,6 +52,8 @@ jobs:
       packages: write # Needed to push to the GitHub Container Registry
     with:
       version: "${{ needs.prepare.outputs.version }}"
+      context: "."
+      file: "./Dockerfile"
       dockerhub: true
       tags: |
         hemilabs/popm-web:latest
