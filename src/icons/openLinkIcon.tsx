@@ -1,7 +1,17 @@
-export const OpenLinkIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none">
+interface Props {
+  className?: string
+}
+
+export const OpenLinkIcon = ({ className }: Props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="none"
+    className={className}
+  >
     <path
-      stroke="#525252"
+      className={className || '#525252 stroke-current'}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={1.333}
