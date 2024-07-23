@@ -3,6 +3,7 @@ import { PlayButton } from './playButton'
 import { Steps } from './steps'
 import { Link, useLocation } from 'react-router-dom'
 import { HemiLogo } from './hemiLogo'
+import { OpenLinkIcon } from 'icons/openLinkIcon'
 
 const TestnetLabel = () => (
   <div className="solid flex items-center justify-center rounded-full border border-orange-200/55 bg-orange-50 px-3 py-1 text-base font-medium leading-normal text-orange-950">
@@ -33,12 +34,28 @@ export const Header = function () {
           <Steps />
         </div>
       </div>
-      {pathname === '/explorer' && (
+      {pathname === '/explorer' ? (
         <div className="flex flex-grow justify-end">
           <div className="hidden items-center md:flex">
             <PlayButton onClick={handlePlay} isPlaying={state.active} />
           </div>
         </div>
+      ) : (
+        <a
+          href={`${
+            import.meta.env.VITE_HEMI_DOCS_URL
+          }/how-to-tutorials/pop-mining/web-based-pop-miner`}
+          rel="noopener noreferrer"
+          target="_blank"
+          className="hidden items-center md:flex"
+        >
+          <p className="flex items-center text-center text-sm font-medium text-neutral-500">
+            Learn more about the Web PoP Miner
+            <span className="ml-1">
+              <OpenLinkIcon />
+            </span>
+          </p>
+        </a>
       )}
     </header>
   )
