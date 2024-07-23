@@ -93,11 +93,12 @@ export const useGetBtcBlockByTransaction = function (
   const transactions = queries
     .map(query => query.data)
     .filter(data => data) as Transaction[]
-  const sortedTransactions = transactions.sort(
-    (a, b) =>
-      (b.status.blockTime ?? 0) - (a.status.blockTime ?? 0) ||
-      (a.status.confirmed ? 1 : -1),
-  )
+  const sortedTransactions = transactions.sort((a, b) => {
+    if (a.status.confirmed === b.status.confirmed) {
+      return (b.status.blockTime ?? 0) - (a.status.blockTime ?? 0)
+    }
+    return a.status.confirmed ? 1 : -1
+  })
 
   return { transactions: sortedTransactions, isLoading, error }
 }
