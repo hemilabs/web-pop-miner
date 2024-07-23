@@ -15,9 +15,9 @@ export const IntroPage = function () {
               Operate the PoP Miner application and earn rewards
             </h1>
             <p className="mb-4 text-base font-medium text-neutral-500 md:text-lg">
-              Mining within the Hemi Network involves a specialized process
-              designed to intertwine the security of the Hemi Network with that
-              of the Bitcoin blockchain.
+              The web PoP Miner is a user-friendly app for beginners to explore
+              mining, introducing Hemi's unique integration with Bitcoin and
+              guiding users towards more advanced mining options.
             </p>
             <div className="flex w-full flex-col justify-start space-y-4 text-base font-medium md:mb-6 md:flex-row md:space-x-4 md:space-y-0">
               <Link to="/manage" className="w-full">
@@ -47,18 +47,18 @@ export const IntroPage = function () {
               <hr className="mb-8 w-full border-neutral-200" />
               <IntroSteps
                 position={1}
-                textBold="Fetching Headers:"
-                text="The PoP Miner retrieves network headers from the Bitcoin Finality Governor for Bitcoin blockchain publication."
+                textBold="Bitcoin Superfinality:"
+                text="Hemi's Proof-of-Proof (PoP) consensus mechanism ensures transactions surpass Bitcoin's level of security in just a few hours."
               />
               <IntroSteps
                 position={2}
-                textBold="Transaction Construction:"
-                text="The miner constructs Bitcoin transactions embedding aforementioned Hemi Network headers."
+                textBold="Network Synchronization:"
+                text="PoP miners synchronize Hemi’s state with Bitcoin’s network, maintaining consistent and reliable data across both blockchains."
               />
               <IntroSteps
                 position={3}
-                textBold="Proof of Publication:"
-                text="Miners broadcast transactions through the Governor. These transactions are then integrated into Hemi’s consensus layer after being validated via the Bitcoin network, resulting in miner rewards."
+                textBold="Earn Rewards:"
+                text="Miners earn tHEMI rewards for successful transactions, with payouts typically 30 minutes after confirmation."
               />
             </div>
           </div>
