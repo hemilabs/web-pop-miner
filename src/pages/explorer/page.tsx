@@ -8,12 +8,35 @@ import { useBtcBalance } from 'hooks/useBtcBalance'
 import { Satoshi } from 'types/Satoshi'
 import { useGetBtcBlockByTransaction } from './_hooks/useBtcTransactions'
 import { useNavigate } from 'react-router-dom'
-import { startPoPMiner, stopPoPMiner } from '@hemilabs/pop-miner'
+import {
+  Event,
+  addEventListener,
+  minerStatus,
+  removeEventListener,
+  startPoPMiner,
+  stopPoPMiner,
+} from '@hemilabs/pop-miner'
 import { Toast, ToastType } from 'utils/toast'
+import { handleError } from 'utils/handleError'
+
+type TransactionEvent = Event & {
+  txHash: string
+}
+
+const checkIfMinerIsRunning = function (): Promise<boolean> {
+  return minerStatus()
+    .then(status => {
+      return status.running
+    })
+    .catch(error => {
+      handleError('Error fetching miner status', error)
+      return false
+    })
+}
 
 export const ExplorerPage = () => {
   const navigate = useNavigate()
-  const { state } = usePopminerContext()
+  const { state, setState } = usePopminerContext()
   const [hashes, setHashes] = useState<string[]>([])
   const balanceFetchIntervelms = 3 * 60 * 1000
   const minSatoshis: Satoshi = import.meta.env.VITE_MIN_SATOSHIS || 200000 // 0.002 tBTC -> 200,000 Satoshis
@@ -23,77 +46,59 @@ export const ExplorerPage = () => {
     useBtcBalance(state.bitcoinPubKeyHash, minSatoshis, balanceFetchIntervelms)
   const { transactions } = useGetBtcBlockByTransaction(true, hashes)
 
-  /**
-   * We will need to improve this part of the code.
-   * Basically we need to know if the PoP miner is not running
-   * to avoid starting or stopping it when it is not necessary.
-   * This is temporary until we have the issue below done
-   * https://github.com/hemilabs/heminetwork/issues/171
-   */
   useEffect(() => {
-    if (state.active && state.wasmInitialized) {
-      startPoPMiner({
-        network: 'testnet',
-        privateKey: state.privateKey,
-        staticFee: 50,
-        logLevel: 'info',
-      })
-        .then(() =>
-          Toast({ message: 'PoP miner active', type: ToastType.Success }),
-        )
-        .catch(err => {
-          console.log('Error starting PoP miner', err.message, err.code)
-          Toast({ message: `Error: ${err.message}`, type: ToastType.Error })
+    if (!state.wasmInitialized) return
+
+    checkIfMinerIsRunning().then(isRunning => {
+      if (state.active && !isRunning) {
+        startPoPMiner({
+          network: 'testnet',
+          privateKey: state.privateKey,
+          staticFee: 50,
+          logLevel: 'info',
         })
-    }
-    if (!state.active && state.wasmInitialized) {
-      stopPoPMiner()
-        .then(() =>
-          Toast({ message: 'PoP miner inactive', type: ToastType.Warning }),
-        )
-        .catch(err => {
-          /**
-           * It is ignoring the stopPoPMiner error for now (no toast).
-           * Because on the component mount the PoP miner is not running.
-           * and the stopPoPMiner will return an error.
-           * we can ignore it safely.
-           * This is temporary until we have the issue below done
-           * https://github.com/hemilabs/heminetwork/issues/171
-           */
-          console.log('Error stopping PoP miner', err.message, err.code)
-        })
-    }
+          .then(() =>
+            Toast({ message: 'PoP miner active', type: ToastType.Success }),
+          )
+          .catch(err => handleError('Error starting PoP miner', err))
+      }
+      if (!state.active && isRunning) {
+        stopPoPMiner()
+          .then(() =>
+            Toast({ message: 'PoP miner inactive', type: ToastType.Warning }),
+          )
+          .catch(err => handleError('Error stopping PoP miner', err))
+      }
+    })
   }, [state.active])
 
   useEffect(() => {
-    /**
-     * Handles the log event and extracts the transaction hash from the log message.
-     * If a valid transaction hash is found, it is added to the list of hashes.
-     * This is temporary until we have the issue below done
-     * https://github.com/hemilabs/heminetwork/issues/150
-     * @param event - The custom event containing the log message.
-     */
-    const handleLogEvent = (event: CustomEvent) => {
-      const logMessage = event.detail as string
-      const txHashRegex =
-        /Successfully broadcast PoP transaction to Bitcoin with TX hash (\b[0-9a-f]{64}\b)/
-      const match = logMessage.match(txHashRegex)
-
-      if (match) {
-        const txHash = match[1]
-        console.log('txHash by event listener', txHash)
-        setHashes(prevHashes => {
-          if (!prevHashes.includes(txHash)) {
-            return [...prevHashes, txHash]
-          }
-          return prevHashes
-        })
-      }
+    const handleEvent = (event: Event) => {
+      const { txHash } = event as TransactionEvent
+      setHashes(prevHashes => {
+        if (!prevHashes.includes(txHash)) {
+          return [...prevHashes, txHash]
+        }
+        return prevHashes
+      })
     }
 
-    document.addEventListener('logEvent', handleLogEvent as EventListener)
+    if (state.wasmInitialized) {
+      addEventListener('transactionBroadcast', handleEvent)
+        .then(() => console.log('transactionBroadcast event added'))
+        .then(() => setState(prevState => ({ ...prevState, active: true })))
+        .catch(err =>
+          handleError('Error adding transactionBroadcast event', err),
+        )
+    }
     return () => {
-      document.removeEventListener('logEvent', handleLogEvent as EventListener)
+      if (state.wasmInitialized) {
+        removeEventListener('transactionBroadcast', handleEvent)
+          .then(() => console.log('transactionBroadcast event removed'))
+          .catch(err =>
+            handleError('Error removing transactionBroadcast event', err),
+          )
+      }
     }
   }, [])
 
