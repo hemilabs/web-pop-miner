@@ -78,7 +78,7 @@ jobs:
     with:
       namespace: "popm-web"
       kustomize: "./kubernetes/kustomize/overlays/testnet/"
-      image: "hemilabs/app:${{ needs.prepare.outputs.tag }}"
+      image: "hemilabs/popm-web:${{ needs.prepare.outputs.tag }}"
       environment-name: "testnet"
       environment-url: "https://pop-miner.hemi.xyz/"
     secrets:
