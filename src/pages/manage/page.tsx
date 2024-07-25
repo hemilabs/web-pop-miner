@@ -9,6 +9,7 @@ import { usePopminerContext } from 'context/popminerContext'
 import { useNavigate } from 'react-router-dom'
 import { useDebounce } from 'use-debounce'
 import { handleError } from 'utils/handleError'
+import Skeleton from 'react-loading-skeleton'
 
 interface PrivateKeyProps {
   source: SourceOfPrivateKeyType
@@ -140,52 +141,86 @@ export const ManagePage = function () {
     }
   }
 
+  const renderInitializedContent = () => (
+    <>
+      <h2 className="text-2xl font-medium leading-tight text-neutral-950">
+        Input or generate your private key
+      </h2>
+      <p className="text-base leading-normal text-neutral-500">
+        Generate a new private key or select to input an existing one.
+      </p>
+      <div className="flex items-center justify-center gap-x-5">
+        <RadioBox
+          checked={sourceOfPrivateKey === 'generate'}
+          icon={<GeneratePkIcon />}
+          id="generate"
+          label="Generate a private key"
+          onChange={() => handleSourceChange('generate')}
+        />
+        <RadioBox
+          checked={sourceOfPrivateKey === 'import'}
+          icon={<ImportPkIcon />}
+          id="import"
+          label="Input your own private key"
+          onChange={() => handleSourceChange('import')}
+        />
+      </div>
+      <div className="h-px w-full border border-solid border-zinc-300/55" />
+      <PrivateKey
+        handleChange={handlePrivateKeyChange}
+        source={sourceOfPrivateKey}
+        privateKey={state.privateKey}
+      />
+      <div className="mt-12">
+        <button
+          onClick={handleContinue}
+          className={`h-14 w-full rounded-xl bg-orange-950 text-lg text-white 
+        ${
+          state.validPrivateKey && state.privateKey
+            ? 'cursor-pointer bg-opacity-90 hover:bg-opacity-100'
+            : 'cursor-default bg-opacity-40'
+        }`}
+        >
+          Continue
+        </button>
+      </div>
+    </>
+  )
+
+  const renderLoadingContent = () => (
+    <div className="flex w-640 flex-col gap-y-2">
+      <div className="w-full">
+        <Skeleton height={40} />
+        <Skeleton height={20} className="mt-8" />
+      </div>
+      <div className="mt-2 flex items-center justify-around gap-x-5">
+        <div className="flex-1">
+          <Skeleton height={100} />
+        </div>
+        <div className="flex-1">
+          <Skeleton height={100} />
+        </div>
+      </div>
+      <div className="mt-2 h-px w-full border border-solid border-zinc-300/55" />
+      <div className="flex items-center justify-around gap-x-5">
+        <div className="w-full">
+          <Skeleton height={60} />
+        </div>
+      </div>
+      <div className="mt-12 w-full">
+        <Skeleton height={60} />
+      </div>
+    </div>
+  )
+
   return (
     <div className="grid w-full grid-cols-3-column-layout">
       <div className="col-start-2 mx-auto">
         <div className="rounded-3xl border border-solid border-slate-100 bg-white p-6 md:p-9">
           <div className="flex w-full flex-col gap-y-4 bg-white">
-            <h2 className="text-2xl font-medium leading-tight text-neutral-950">
-              Input or generate your private key
-            </h2>
-            <p className="text-base leading-normal text-neutral-500">
-              Generate a new private key or select to input an existing one.
-            </p>
-            <div className="flex items-center justify-center gap-x-5">
-              <RadioBox
-                checked={sourceOfPrivateKey === 'generate'}
-                icon={<GeneratePkIcon />}
-                id="generate"
-                label="Generate a private key"
-                onChange={() => handleSourceChange('generate')}
-              />
-              <RadioBox
-                checked={sourceOfPrivateKey === 'import'}
-                icon={<ImportPkIcon />}
-                id="import"
-                label="Input your own private key"
-                onChange={() => handleSourceChange('import')}
-              />
-            </div>
-            <div className="h-px w-full border border-solid border-zinc-300/55" />
-            <PrivateKey
-              handleChange={handlePrivateKeyChange}
-              source={sourceOfPrivateKey}
-              privateKey={state.privateKey}
-            />
-            <div className="mt-12">
-              <button
-                onClick={handleContinue}
-                className={`h-14 w-full rounded-xl bg-orange-950 text-lg text-white 
-              ${
-                state.validPrivateKey && state.privateKey
-                  ? 'cursor-pointer bg-opacity-90 hover:bg-opacity-100'
-                  : 'cursor-default bg-opacity-40'
-              }`}
-              >
-                Continue
-              </button>
-            </div>
+            {state.wasmInitialized
+              ? renderInitializedContent()
+              : renderLoadingContent()}
           </div>
         </div>
       </div>
