@@ -39,6 +39,9 @@ const config: Config = {
       gridTemplateColumns: {
         '3-column-layout': '1fr 680px 1fr',
       },
+      width: {
+        '640': '640px',
+      },
       keyframes: {
         blink: {
           '0%, 100%': { opacity: '1' },
