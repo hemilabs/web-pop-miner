@@ -53,7 +53,7 @@ export const TransactionTable = ({ transactions }: Props) => {
   const { state } = usePopminerContext()
   return (
     <>
-      <div className="relative rounded-t-xl border-l border-r border-t bg-neutral-50 pt-3">
+      <div className="relative max-h-[calc(100vh-25rem)] flex-grow overflow-y-auto rounded-t-xl border-l border-r border-t bg-neutral-50 pt-3">
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-neutral-50 text-left text-sm text-neutral-600">
