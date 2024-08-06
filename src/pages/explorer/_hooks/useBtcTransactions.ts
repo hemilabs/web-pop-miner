@@ -75,6 +75,7 @@ export const useGetBtcBlockByTransaction = function (
           enabled: active,
           queryFn: () => fetchTransaction(txHash),
           queryKey: ['btc-block-transaction', txHash],
+          refetchOnWindowFocus: false,
           refetchInterval(query) {
             if (query.state.data?.status.confirmed) return false
             return 60 * 1000
