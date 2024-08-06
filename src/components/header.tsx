@@ -4,6 +4,7 @@ import { Steps } from './steps'
 import { Link, useLocation } from 'react-router-dom'
 import { HemiLogo } from './hemiLogo'
 import { OpenLinkIcon } from 'icons/openLinkIcon'
+import { LoadingSpinner } from './loadingSpinner'
 
 const TestnetLabel = () => (
   <div className="solid flex items-center justify-center rounded-full border border-orange-200/55 bg-orange-50 px-3 py-1 text-base font-medium leading-normal text-orange-950">
@@ -37,6 +38,18 @@ export const Header = function () {
       {pathname === '/explorer' ? (
         <div className="flex flex-grow justify-end">
           <div className="hidden items-center md:flex">
+            {state.active && (
+              <>
+                <LoadingSpinner />
+                <p className="mx-2 text-base leading-normal text-neutral-500">
+                  <span className="mr-1 text-orange-500">
+                    The PoP Miner is running.
+                  </span>
+                  Don’t close the page
+                </p>
+              </>
+            )}
+
             <PlayButton onClick={handlePlay} isPlaying={state.active} />
           </div>
         </div>
