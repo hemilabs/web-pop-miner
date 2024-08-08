@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useBtcBalance } from 'hooks/useBtcBalance'
 import { Satoshi } from 'types/Satoshi'
 import { useEffect } from 'react'
-import { OpenLinkIcon } from 'icons/openLinkIcon'
+import { ClaimAssets } from './_components/claimAssets'
 
 const minSatoshis: Satoshi = import.meta.env.VITE_MIN_SATOSHIS || 200000 // 0.002 tBTC -> 200,000 Satoshis
 
@@ -64,24 +64,6 @@ export const FundPage = function () {
               </div>
               {isAddressPending && <WaitingAddress />}
               {isAddressFunded && <AddressFunded />}
-              <div className="mt-11 flex items-center justify-center">
-                <p className="flex items-center text-center font-medium text-orange-950">
-                  <span className="mr-1 text-neutral-950">Receive tBTC by</span>
-                  <a
-                    href={`${
-                      import.meta.env.VITE_HEMI_PORTAL_URL
-                    }/en/get-started`}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                    className="flex items-center"
-                  >
-                    claiming your Hemi Onboarding package
-                    <span className="ml-1 text-orange-950">
-                      <OpenLinkIcon className="stroke-current" />
-                    </span>
-                  </a>
-                </p>
-              </div>
               <div className="mt-3">
                 <button
                   onClick={handleContinue}
@@ -96,6 +78,9 @@ export const FundPage = function () {
                 </button>
               </div>
             </div>
+          </div>
+          <div className="mt-3 flex justify-center">
+            <ClaimAssets />
           </div>
         </div>
       </div>

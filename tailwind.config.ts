@@ -17,6 +17,7 @@ const config: Config = {
       boxShadow: {
         'custom-inset': 'inset 0px 0px 4px 0px rgba(255, 255, 255, 0.48)',
         'custom-intro': '0px 1px 3px 0px rgba(0, 2, 2, 0.08)',
+        'custom-claim-assets': '0px 1px 2px 0px rgba(10, 10, 10, 0.04)',
       },
       colors: {
         orange: {
