@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDebounce } from 'use-debounce'
 import { handleError } from 'utils/handleError'
 import Skeleton from 'react-loading-skeleton'
+import { CardWarningKey } from './_components/cardWarningKey'
 
 interface PrivateKeyProps {
   source: SourceOfPrivateKeyType
@@ -222,6 +223,9 @@ export const ManagePage = function () {
               ? renderInitializedContent()
               : renderLoadingContent()}
           </div>
+        </div>
+        <div className="mt-6">
+          <CardWarningKey />
         </div>
       </div>
     </div>
