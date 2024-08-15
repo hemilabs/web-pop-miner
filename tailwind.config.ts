@@ -23,6 +23,9 @@ const config: Config = {
         orange: {
           950: '#FF6C15',
         },
+        red: {
+          warning: '#E11D48',
+        },
         slate: {
           50: '#F7F7F7',
           100: '#E5E6E6',
