@@ -131,7 +131,7 @@ export const ManagePage = function () {
   const renderInitializedContent = () => (
     <>
       <h2 className="text-2xl font-medium leading-tight text-neutral-950">
-        Input or generate your private key
+        Input or generate a private key
       </h2>
       <p className="max-w-md text-base text-neutral-500">
         Choose between generating a new private key or inputting an existing
@@ -142,16 +142,16 @@ export const ManagePage = function () {
           checked={sourceOfPrivateKey === 'generate'}
           icon={<GeneratePkIcon />}
           id="generate"
-          title="Generate a new private key"
-          subtitle="And start a new mining session"
+          title="Start new mining session"
+          subtitle="By generating a new private key"
           onChange={() => handleSourceChange('generate')}
         />
         <RadioBox
           checked={sourceOfPrivateKey === 'import'}
           icon={<ImportPkIcon />}
           id="import"
-          title="Input a used private key"
-          subtitle="And continue your mining session"
+          title="Continue a mining session"
+          subtitle="By Inputing an existing private key"
           onChange={() => handleSourceChange('import')}
         />
       </div>
