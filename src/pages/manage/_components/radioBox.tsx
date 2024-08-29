@@ -6,7 +6,8 @@ type RadioBoxProps = {
   disabled?: boolean
   icon: ReactNode
   id: SourceOfPrivateKeyType
-  label: string
+  title: string
+  subtitle: string
   onChange: () => void
 }
 export const RadioBox = ({
@@ -14,20 +15,18 @@ export const RadioBox = ({
   disabled = false,
   icon,
   id,
-  label,
+  title,
+  subtitle,
   onChange,
 }: RadioBoxProps) => (
   <div
-    className={`min-h-24 w-full min-w-72 rounded-lg border border-solid p-3 hover:cursor-pointer ${
+    className={`min-h-24 w-full min-w-[270px] rounded-lg border border-solid p-3 hover:cursor-pointer ${
       checked ? 'border-orange-950' : 'border-zinc-300/55'
     } ${disabled ? 'pointer-events-none opacity-50' : 'hover:cursor-pointer'}`}
     onClick={onChange}
   >
-    {icon}
-    <div className="pointer-events-none mt-2 flex items-center justify-between pr-3">
-      <label htmlFor={id} className="max-w-40 break-words text-sm">
-        {label}
-      </label>
+    <div className="item-center flex justify-between">
+      {icon}
       <input
         className="orange-radio h-4 w-4"
         checked={checked}
@@ -36,6 +35,12 @@ export const RadioBox = ({
         readOnly
         type="radio"
       />
+    </div>
+    <div className="pointer-events-none mt-2 flex items-start justify-between pr-3">
+      <div className="flex max-w-48 flex-col break-words text-sm">
+        <h1 className="text-neutral-950">{title}</h1>
+        <h2 className="mt-2 text-neutral-500">{subtitle}</h2>
+      </div>
     </div>
   </div>
 )

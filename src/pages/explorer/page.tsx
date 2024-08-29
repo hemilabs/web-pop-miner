@@ -18,6 +18,8 @@ import {
 } from '@hemilabs/pop-miner'
 import { Toast, ToastType } from 'utils/toast'
 import { handleError } from 'utils/handleError'
+import { InfoIcon } from 'icons/infoIcon'
+import { Tooltip } from 'components/tooltip'
 
 type TransactionEvent = Event & {
   txHash: string
@@ -123,18 +125,58 @@ export const ExplorerPage = () => {
     }
   }, [state.bitcoinPubKeyHash, state.hemiAddress])
 
+  const renderHemiIcon = () => {
+    return (
+      <Tooltip
+        id="themi-tooltip"
+        overlayInnerStyle={{
+          background: 'black',
+          border: '0',
+          borderRadius: '12px',
+          maxWidth: '390px',
+          animation: 'fadeIn 0.5s ease-in-out forwards',
+        }}
+        overlay={
+          <div className="flex flex-col items-start gap-y-2 p-1">
+            <h1 className="text-lg font-normal text-white">
+              Add the HEMI contract to your wallet
+            </h1>
+            <h2 className="text-base font-normal text-neutral-400">
+              If you can't see the HEMI balance in your wallet, try adding the
+              contract.
+            </h2>
+            <a
+              href={`${
+                import.meta.env.VITE_HEMI_DOCS_URL
+              }/how-to-tutorials/pop-mining/add-themi-to-metamask`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="mt-2 text-base font-normal text-white underline">
+                Add contract
+              </span>
+            </a>
+          </div>
+        }
+      >
+        <InfoIcon />
+      </Tooltip>
+    )
+  }
+
   return (
     <div className="flex w-full flex-col items-center justify-center space-y-4">
       <div className="flex w-full max-w-7xl space-x-4 px-4">
         <ChainBalance
-          title="Hemi Balance"
+          title="Testnet HEMI balance"
           chain={Chain.HemiTestnet}
+          chainIcon={renderHemiIcon()}
           address={state.hemiAddress}
           explorerUrl={import.meta.env.VITE_HEMI_EXPLORER_URL}
           useBalance={hemiBalance}
         />
         <ChainBalance
-          title="Bitcoin Balance"
+          title="Testnet Bitcoin balance"
           chain={Chain.BitcoinTestnet}
           address={state.bitcoinPubKeyHash}
           explorerUrl={import.meta.env.VITE_PUBLIC_MEMPOOL_API_URL}

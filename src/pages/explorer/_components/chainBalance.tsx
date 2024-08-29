@@ -1,7 +1,7 @@
 import { Chain } from 'enums/chain'
 import { CopyIcon } from 'icons/copyIcon'
 import { OpenLinkIcon } from 'icons/openLinkIcon'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { Toast, ToastType } from 'utils/toast'
 
@@ -10,6 +10,7 @@ import { Toast, ToastType } from 'utils/toast'
  * @interface
  * @property {string} title - The title of the balance.
  * @property {Chain} chain - The chain.
+ * @property {ReactNode} chainIcon - The chain icon.
  * @property {string} address - The address.
  * @property {string} explorerUrl - The url of the explorer.
  * @property {void} useBalance - The useBalance function.
@@ -17,6 +18,7 @@ import { Toast, ToastType } from 'utils/toast'
 interface Props {
   title: string
   chain: Chain
+  chainIcon?: ReactNode
   address: string
   explorerUrl: string
   useBalance: () => { totalLabelBalance?: string; isLoading: boolean }
@@ -34,6 +36,7 @@ const handleCopyToClipboard = async (text: string) => {
 export const ChainBalance = ({
   title,
   chain,
+  chainIcon,
   address,
   explorerUrl,
   useBalance,
@@ -50,7 +53,8 @@ export const ChainBalance = ({
         ) : (
           <span>{totalLabelBalance}</span>
         )}
-        <span className="ml-2 text-base text-neutral-500">{chain}</span>
+        <span className="ml-2 mr-1 text-base text-neutral-500">{chain}</span>
+        {chainIcon}
       </div>
       <div className="mt-4 flex items-center justify-between break-all rounded border border-solid border-slate-100 bg-neutral-50 p-2 text-sm text-neutral-600">
         <span>{address}</span>

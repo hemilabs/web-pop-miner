@@ -22,6 +22,7 @@ interface PopminerContextState {
   hemiAddress: string
   validPrivateKey: boolean
   wasmInitialized: boolean
+  rightpanel: ReactNode
 }
 
 // Default state for the context
@@ -35,6 +36,7 @@ const defaultValue: PopminerContextState = {
   hemiAddress: '',
   validPrivateKey: false,
   wasmInitialized: false,
+  rightpanel: null,
 }
 
 // Creating the context with a default value
