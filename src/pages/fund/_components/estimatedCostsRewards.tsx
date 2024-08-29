@@ -14,7 +14,7 @@ export const EstimatedCostsRewards = () => {
   return (
     <div className="grid w-full grid-cols-3-column-layout pt-4">
       <div className="col-start-2 mx-auto max-w-lg">
-        <div className="rounded-3xl border border-solid border-slate-100 bg-white px-10 py-6">
+        <div className="rounded-2xl border border-solid border-slate-100 bg-white px-10 py-6">
           <div className="flex w-full flex-col gap-y-3">
             <h2 className="mb-2 text-base font-medium leading-tight text-neutral-950">
               Estimated mining costs and rewards

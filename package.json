@@ -1,6 +1,6 @@
 {
   "name": "web-pop-miner",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Web PoP miner",
   "main": "index.js",
   "scripts": {
@@ -13,19 +13,22 @@
     "copy-popminer-wasm": "mkdir -p ./src/assets && cp ./node_modules/@hemilabs/pop-miner/dist/popminer.wasm ./src/assets/popminer.wasm"
   },
   "dependencies": {
-    "@hemilabs/pop-miner": "0.2.8",
-    "@tanstack/react-query": "^5.45.1",
+    "@hemilabs/pop-miner": "0.3.2",
+    "@tanstack/react-query": "5.45.1",
     "camelcase-keys": "7.0.2",
-    "fetch-plus-plus": "^1.0.0",
+    "fetch-plus-plus": "1.0.0",
+    "rc-tooltip": "6.2.0",
     "react": "18.2.0",
+    "react-confetti-explosion": "2.1.2",
     "react-dom": "18.2.0",
-    "react-loading-skeleton": "^3.4.0",
+    "react-loading-skeleton": "3.4.0",
     "react-router-dom": "6.23.1",
-    "react-toastify": "^10.0.5",
-    "use-debounce": "^10.0.1"
+    "react-toastify": "10.0.5",
+    "use-debounce": "10.0.1"
   },
   "devDependencies": {
-    "@types/node": "^20.14.9",
+    "@types/node": "20.14.9",
+    "@types/rc-tooltip": "3.7.14",
     "@types/react": "18.2.45",
     "@types/react-dom": "18.2.18",
     "@typescript-eslint/eslint-plugin": "6.16.0",
