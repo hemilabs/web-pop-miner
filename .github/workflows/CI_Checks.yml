@@ -12,7 +12,7 @@ on:
 
 jobs:
   code_checks:
-    name: Code Styling check
+    name: Code check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -25,3 +25,5 @@ jobs:
         run: npm run format:check
       - name: Check linting
         run: npm run lint
+      - name: Check build
+        run: npm run build
