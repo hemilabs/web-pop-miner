@@ -38,7 +38,7 @@ const toCamelCase = <T extends Record<string, any> | readonly any[]>(obj: T) =>
   camelcaseKeys(obj, { deep: true })
 
 const fetchTransaction = (hash: string): Promise<Transaction | null> =>
-  fetch(`${import.meta.env.VITE_PUBLIC_MEMPOOL_API_URL}/api/tx/${hash}`)
+  fetch(`${import.meta.env.VITE_PUBLIC_BLOCKSTREAM_API_URL}/api/tx/${hash}`)
     .catch(function (err) {
       if (err?.message.includes('not found')) {
         // It seems it takes a couple of seconds for the Tx for being picked up
