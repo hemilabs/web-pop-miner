@@ -20,7 +20,7 @@ export const useBtcBalance = (
     queryFn: async () => {
       const response = await fetch(
         `${
-          import.meta.env.VITE_PUBLIC_MEMPOOL_API_URL
+          import.meta.env.VITE_PUBLIC_BLOCKSTREAM_API_URL
         }/api/address/${publicAddress}`,
       )
       if (!response) {
