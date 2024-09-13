@@ -58,6 +58,7 @@ export const ExplorerPage = () => {
           privateKey: state.privateKey,
           staticFee: 50,
           logLevel: 'info',
+          automaticFees: 'fastest',
         })
           .then(() =>
             Toast({ message: 'PoP miner active', type: ToastType.Success }),

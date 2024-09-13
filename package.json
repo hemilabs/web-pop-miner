@@ -1,6 +1,6 @@
 {
   "name": "web-pop-miner",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "Web PoP miner",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "copy-popminer-wasm": "mkdir -p ./src/assets && cp ./node_modules/@hemilabs/pop-miner/dist/popminer.wasm ./src/assets/popminer.wasm"
   },
   "dependencies": {
-    "@hemilabs/pop-miner": "0.3.8",
+    "@hemilabs/pop-miner": "0.4.2",
     "@tanstack/react-query": "5.45.1",
     "camelcase-keys": "7.0.2",
     "fetch-plus-plus": "1.0.0",
