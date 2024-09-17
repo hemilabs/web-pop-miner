@@ -63,13 +63,6 @@ export const ClaimAssets = () => {
         </div>
         <div className="mt-4 flex space-x-4">
           <ClaimCard
-            iconText="#claim-capsule"
-            title="Claim a Capsule"
-            subtitle="And earn"
-            additionalText="0.1 tBTC"
-            finalText="and more..."
-          />
-          <ClaimCard
             iconText="#faucet"
             title="Try our Discord faucet"
             subtitle="And earn"
