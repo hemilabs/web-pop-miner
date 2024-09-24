@@ -37,8 +37,14 @@ export type Transaction = {
 const toCamelCase = <T extends Record<string, any> | readonly any[]>(obj: T) =>
   camelcaseKeys(obj, { deep: true })
 
-const fetchTransaction = (hash: string): Promise<Transaction | null> =>
-  fetch(`${import.meta.env.VITE_PUBLIC_BLOCKSTREAM_API_URL}/api/tx/${hash}`)
+const blockstreamApiUrl = import.meta.env.VITE_PUBLIC_BLOCKSTREAM_API_URL
+const mempoolApiUrl = import.meta.env.VITE_PUBLIC_MEMPOOL_API_URL
+
+const fetchTransactionFromApi = (
+  url: string,
+  hash: string,
+): Promise<Transaction | null> =>
+  fetch(`${url}/api/tx/${hash}`)
     .catch(function (err) {
       if (err?.message.includes('not found')) {
         // It seems it takes a couple of seconds for the Tx for being picked up
@@ -64,24 +70,62 @@ const fetchTransaction = (hash: string): Promise<Transaction | null> =>
       return { ...data, cost: parseFloat(cost) }
     })
 
+const getRandomApiUrl = () => {
+  return Math.random() < 0.5 ? blockstreamApiUrl : mempoolApiUrl
+}
+
+const fetchTransactionWithRedundancy = (
+  hash: string,
+): Promise<Transaction | null> => {
+  const primaryApiUrl = getRandomApiUrl()
+  const secondaryApiUrl =
+    primaryApiUrl === blockstreamApiUrl ? mempoolApiUrl : blockstreamApiUrl
+
+  return fetchTransactionFromApi(primaryApiUrl, hash).catch(function (error) {
+    console.warn(`Primary API failed: ${primaryApiUrl}. Error: ${error}`)
+
+    return fetchTransactionFromApi(secondaryApiUrl, hash).catch(
+      function (secondaryError) {
+        console.error(
+          `Secondary API also failed: ${secondaryApiUrl}. Error: ${secondaryError}`,
+        )
+        throw new Error('Both APIs failed to fetch transaction')
+      },
+    )
+  })
+}
+
 export const useGetBtcBlockByTransaction = function (
   active: boolean,
   txHashes: string[],
 ) {
+  const twoHoursInMilliseconds = 2 * 60 * 60 * 1000
+
   const queries = useQueries({
     queries: txHashes.map(
       txHash =>
         ({
           enabled: active,
-          queryFn: () => fetchTransaction(txHash),
+          queryFn: () => fetchTransactionWithRedundancy(txHash),
           queryKey: ['btc-block-transaction', txHash],
           refetchOnWindowFocus: false,
           refetchInterval(query) {
+            const currentTime = new Date().getTime()
             if (query.state.data?.status.confirmed) return false
-            return 60 * 1000
+
+            // Check if the transaction has exceeded 2 hours
+            const queryStartTime: number =
+              typeof query.meta?.startTime === 'number'
+                ? query.meta.startTime
+                : 0
+            if (currentTime - queryStartTime > twoHoursInMilliseconds) {
+              return false
+            }
+            return 120 * 1000
           },
           refetchIntervalInBackground: true,
           meta: {
+            startTime: new Date().getTime(),
             errorMessage: 'Failed to fetch transaction',
           },
         }) as UseQueryOptions<Transaction>,

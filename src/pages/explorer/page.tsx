@@ -180,7 +180,7 @@ export const ExplorerPage = () => {
           title="Testnet Bitcoin balance"
           chain={Chain.BitcoinTestnet}
           address={state.bitcoinPubKeyHash}
-          explorerUrl={import.meta.env.VITE_PUBLIC_BLOCKSTREAM_API_URL}
+          explorerUrl={import.meta.env.VITE_PUBLIC_MEMPOOL_API_URL}
           useBalance={btcBalance}
         />
       </div>

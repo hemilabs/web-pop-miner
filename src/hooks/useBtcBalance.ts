@@ -10,6 +10,47 @@ type ChainBalance = {
   total: number
 }
 
+const blockstreamApiUrl = import.meta.env.VITE_PUBLIC_BLOCKSTREAM_API_URL
+const mempoolApiUrl = import.meta.env.VITE_PUBLIC_MEMPOOL_API_URL
+
+const fetchBalanceFromApi = async (
+  url: string,
+  publicAddress: string,
+): Promise<ChainBalance> => {
+  const response = await fetch(`${url}/api/address/${publicAddress}`)
+  if (!response) {
+    throw new Error('Failed to fetch balance')
+  }
+  response.total =
+    response.chain_stats.funded_txo_sum - response.chain_stats.spent_txo_sum
+  return response
+}
+
+const getRandomApiUrl = () => {
+  return Math.random() < 0.5 ? blockstreamApiUrl : mempoolApiUrl
+}
+
+const fetchWithRedundancy = (publicAddress: string): Promise<ChainBalance> => {
+  const primaryApiUrl = getRandomApiUrl()
+  const secondaryApiUrl =
+    primaryApiUrl === blockstreamApiUrl ? mempoolApiUrl : blockstreamApiUrl
+
+  return fetchBalanceFromApi(primaryApiUrl, publicAddress).catch(
+    function (error) {
+      console.warn(`Primary API failed: ${primaryApiUrl}. Error: ${error}`)
+
+      return fetchBalanceFromApi(secondaryApiUrl, publicAddress).catch(
+        function (secondaryError) {
+          console.error(
+            `Secondary API also failed: ${secondaryApiUrl}. Error: ${secondaryError}`,
+          )
+          throw new Error('Both APIs failed to fetch balance')
+        },
+      )
+    },
+  )
+}
+
 export const useBtcBalance = (
   publicAddress: string | undefined,
   minSatoshis: Satoshi,
@@ -17,19 +58,7 @@ export const useBtcBalance = (
 ) => {
   const { data, isLoading, error, ...rest } = useQuery<ChainBalance>({
     enabled: !!publicAddress,
-    queryFn: async () => {
-      const response = await fetch(
-        `${
-          import.meta.env.VITE_PUBLIC_BLOCKSTREAM_API_URL
-        }/api/address/${publicAddress}`,
-      )
-      if (!response) {
-        throw new Error('Failed to fetch balance')
-      }
-      response.total =
-        response.chain_stats.funded_txo_sum - response.chain_stats.spent_txo_sum
-      return response
-    },
+    queryFn: () => fetchWithRedundancy(publicAddress!),
     queryKey: ['tbtcBalance', publicAddress],
     refetchInterval(query) {
       if (forceRefreshIntervalms > 0) return forceRefreshIntervalms
@@ -37,7 +66,7 @@ export const useBtcBalance = (
       if (totalSatoshis >= minSatoshis) {
         return false
       }
-      return 30 * 1000
+      return 120 * 1000
     },
     refetchIntervalInBackground: true,
     meta: {
