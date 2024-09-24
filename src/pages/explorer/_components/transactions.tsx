@@ -68,7 +68,7 @@ export const TransactionTable = ({ transactions }: Props) => {
                 status.confirmed ? status.blockTime : Date.now(),
               )
               const txLink = `${
-                import.meta.env.VITE_PUBLIC_BLOCKSTREAM_API_URL
+                import.meta.env.VITE_PUBLIC_MEMPOOL_API_URL
               }/tx/${txid}`
               return (
                 <tr key={txid} className="border-t bg-white">
