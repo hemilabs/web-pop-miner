@@ -1,6 +1,7 @@
 import { useQueries, UseQueryOptions } from '@tanstack/react-query'
 import camelcaseKeys from 'camelcase-keys'
-import fetch from 'fetch-plus-plus'
+// @ts-ignore ts(7016) - Remove once types are included in the package.
+import { esploraClient } from 'esplora-client'
 import { Satoshi } from 'types/Satoshi'
 
 type Vin = {
@@ -37,15 +38,13 @@ export type Transaction = {
 const toCamelCase = <T extends Record<string, any> | readonly any[]>(obj: T) =>
   camelcaseKeys(obj, { deep: true })
 
-const blockstreamApiUrl = import.meta.env.VITE_PUBLIC_BLOCKSTREAM_API_URL
-const mempoolApiUrl = import.meta.env.VITE_PUBLIC_MEMPOOL_API_URL
+const network = import.meta.env.VITE_PUBLIC_BITCOIN_NETWORK
+const { bitcoin } = esploraClient({ network })
 
-const fetchTransactionFromApi = (
-  url: string,
-  hash: string,
-): Promise<Transaction | null> =>
-  fetch(`${url}/api/tx/${hash}`)
-    .catch(function (err) {
+const fetchTransaction = (hash: string): Promise<Transaction | null> =>
+  bitcoin.transactions
+    .getTx({ txid: hash })
+    .catch(function (err: Error) {
       if (err?.message.includes('not found')) {
         // It seems it takes a couple of seconds for the Tx for being picked up
         // Once it appears in the mempool, it will return the full object
@@ -70,31 +69,6 @@ const fetchTransactionFromApi = (
       return { ...data, cost: parseFloat(cost) }
     })
 
-const getRandomApiUrl = () => {
-  return Math.random() < 0.5 ? blockstreamApiUrl : mempoolApiUrl
-}
-
-const fetchTransactionWithRedundancy = (
-  hash: string,
-): Promise<Transaction | null> => {
-  const primaryApiUrl = getRandomApiUrl()
-  const secondaryApiUrl =
-    primaryApiUrl === blockstreamApiUrl ? mempoolApiUrl : blockstreamApiUrl
-
-  return fetchTransactionFromApi(primaryApiUrl, hash).catch(function (error) {
-    console.warn(`Primary API failed: ${primaryApiUrl}. Error: ${error}`)
-
-    return fetchTransactionFromApi(secondaryApiUrl, hash).catch(
-      function (secondaryError) {
-        console.error(
-          `Secondary API also failed: ${secondaryApiUrl}. Error: ${secondaryError}`,
-        )
-        throw new Error('Both APIs failed to fetch transaction')
-      },
-    )
-  })
-}
-
 export const useGetBtcBlockByTransaction = function (
   active: boolean,
   txHashes: string[],
@@ -106,7 +80,7 @@ export const useGetBtcBlockByTransaction = function (
       txHash =>
         ({
           enabled: active,
-          queryFn: () => fetchTransactionWithRedundancy(txHash),
+          queryFn: () => fetchTransaction(txHash),
           queryKey: ['btc-block-transaction', txHash],
           refetchOnWindowFocus: false,
           refetchInterval(query) {

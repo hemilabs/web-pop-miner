@@ -16,6 +16,7 @@
     "@hemilabs/pop-miner": "0.4.2",
     "@tanstack/react-query": "5.45.1",
     "camelcase-keys": "7.0.2",
+    "esplora-client": "1.1.0",
     "fetch-plus-plus": "1.0.0",
     "rc-tooltip": "6.2.0",
     "react": "18.2.0",
