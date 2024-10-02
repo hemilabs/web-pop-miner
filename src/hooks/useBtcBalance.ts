@@ -4,6 +4,7 @@ import { esploraClient } from 'esplora-client'
 import { Satoshi } from 'types/Satoshi'
 
 type ChainBalance = {
+  address: string
   chain_stats: {
     funded_txo_sum: number
     spent_txo_sum: number
