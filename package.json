@@ -9,6 +9,7 @@
     "lint": "eslint --cache .",
     "build": "npm run copy-popminer-wasm && tsc && vite build",
     "preview": "vite preview",
+    "test": "vitest",
     "tsc": "tsc --noEmit",
     "copy-popminer-wasm": "mkdir -p ./src/assets && cp ./node_modules/@hemilabs/pop-miner/dist/popminer.wasm ./src/assets/popminer.wasm"
   },
@@ -16,6 +17,7 @@
     "@hemilabs/pop-miner": "0.4.2",
     "@tanstack/react-query": "5.45.1",
     "camelcase-keys": "7.0.2",
+    "esplora-client": "1.1.0",
     "fetch-plus-plus": "1.0.0",
     "rc-tooltip": "6.2.0",
     "react": "18.2.0",
@@ -27,6 +29,7 @@
     "use-debounce": "10.0.1"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.0.1",
     "@types/node": "20.14.9",
     "@types/rc-tooltip": "3.7.14",
     "@types/react": "18.2.45",
@@ -39,13 +42,15 @@
     "eslint-config-bloq": "4.0.0",
     "eslint-plugin-html": "7.1.0",
     "eslint-plugin-markdownlint": "0.5.0",
+    "jsdom": "^25.0.1",
     "lint-staged": "15.2.0",
     "prettier": "3.1.1",
     "prettier-plugin-tailwindcss": "0.5.9",
     "tailwindcss": "3.4.0",
     "typescript": "5.3.3",
     "vite": "5.2.13",
-    "vite-tsconfig-paths": "4.3.2"
+    "vite-tsconfig-paths": "4.3.2",
+    "vitest": "^2.1.1"
   },
   "type": "module",
   "eslintConfig": {

@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import fetch from 'fetch-plus-plus'
+// @ts-ignore ts(7016) - Remove once types are included in the package.
+import { esploraClient } from 'esplora-client'
 import { Satoshi } from 'types/Satoshi'
 
 type ChainBalance = {
+  address: string
   chain_stats: {
     funded_txo_sum: number
     spent_txo_sum: number
@@ -10,46 +12,8 @@ type ChainBalance = {
   total: number
 }
 
-const blockstreamApiUrl = import.meta.env.VITE_PUBLIC_BLOCKSTREAM_API_URL
-const mempoolApiUrl = import.meta.env.VITE_PUBLIC_MEMPOOL_API_URL
-
-const fetchBalanceFromApi = async (
-  url: string,
-  publicAddress: string,
-): Promise<ChainBalance> => {
-  const response = await fetch(`${url}/api/address/${publicAddress}`)
-  if (!response) {
-    throw new Error('Failed to fetch balance')
-  }
-  response.total =
-    response.chain_stats.funded_txo_sum - response.chain_stats.spent_txo_sum
-  return response
-}
-
-const getRandomApiUrl = () => {
-  return Math.random() < 0.5 ? blockstreamApiUrl : mempoolApiUrl
-}
-
-const fetchWithRedundancy = (publicAddress: string): Promise<ChainBalance> => {
-  const primaryApiUrl = getRandomApiUrl()
-  const secondaryApiUrl =
-    primaryApiUrl === blockstreamApiUrl ? mempoolApiUrl : blockstreamApiUrl
-
-  return fetchBalanceFromApi(primaryApiUrl, publicAddress).catch(
-    function (error) {
-      console.warn(`Primary API failed: ${primaryApiUrl}. Error: ${error}`)
-
-      return fetchBalanceFromApi(secondaryApiUrl, publicAddress).catch(
-        function (secondaryError) {
-          console.error(
-            `Secondary API also failed: ${secondaryApiUrl}. Error: ${secondaryError}`,
-          )
-          throw new Error('Both APIs failed to fetch balance')
-        },
-      )
-    },
-  )
-}
+const network = import.meta.env.VITE_PUBLIC_BITCOIN_NETWORK
+const { bitcoin } = esploraClient({ network })
 
 export const useBtcBalance = (
   publicAddress: string | undefined,
@@ -58,7 +22,17 @@ export const useBtcBalance = (
 ) => {
   const { data, isLoading, error, ...rest } = useQuery<ChainBalance>({
     enabled: !!publicAddress,
-    queryFn: () => fetchWithRedundancy(publicAddress!),
+    queryFn: async () => {
+      const response = await bitcoin.addresses.getAddress({
+        address: publicAddress,
+      })
+      if (!response) {
+        throw new Error('Failed to fetch balance')
+      }
+      response.total =
+        response.chain_stats.funded_txo_sum - response.chain_stats.spent_txo_sum
+      return response
+    },
     queryKey: ['tbtcBalance', publicAddress],
     refetchInterval(query) {
       if (forceRefreshIntervalms > 0) return forceRefreshIntervalms
