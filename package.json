@@ -11,7 +11,8 @@
     "lint": "eslint --cache .",
     "test": "vitest",
     "tsc": "tsc --noEmit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hemilabs/pop-miner": "0.4.2",
@@ -42,6 +43,7 @@
     "eslint-config-bloq": "4.0.0",
     "eslint-plugin-html": "7.1.0",
     "eslint-plugin-markdownlint": "0.5.0",
+    "husky": "^9.1.6",
     "jsdom": "^25.0.1",
     "lint-staged": "15.2.0",
     "prettier": "3.1.1",
