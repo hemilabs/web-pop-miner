@@ -4,14 +4,15 @@
   "description": "Web PoP miner",
   "main": "index.js",
   "scripts": {
+    "build": "npm run copy-popminer-wasm && tsc && vite build",
+    "copy-popminer-wasm": "mkdir -p ./src/assets && cp ./node_modules/@hemilabs/pop-miner/dist/popminer.wasm ./src/assets/popminer.wasm",
     "dev": "npm run copy-popminer-wasm && vite",
     "format:check": "prettier --check .",
     "lint": "eslint --cache .",
-    "build": "npm run copy-popminer-wasm && tsc && vite build",
-    "preview": "vite preview",
     "test": "vitest",
     "tsc": "tsc --noEmit",
-    "copy-popminer-wasm": "mkdir -p ./src/assets && cp ./node_modules/@hemilabs/pop-miner/dist/popminer.wasm ./src/assets/popminer.wasm"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hemilabs/pop-miner": "0.4.2",
@@ -42,6 +43,7 @@
     "eslint-config-bloq": "4.0.0",
     "eslint-plugin-html": "7.1.0",
     "eslint-plugin-markdownlint": "0.5.0",
+    "husky": "^9.1.6",
     "jsdom": "^25.0.1",
     "lint-staged": "15.2.0",
     "prettier": "3.1.1",
@@ -54,6 +56,11 @@
   },
   "type": "module",
   "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "node": true
+    },
     "extends": [
       "bloq",
       "prettier"
@@ -63,11 +70,11 @@
     ],
     "overrides": [
       {
-        "files": [
-          "*.md"
-        ],
         "extends": [
           "plugin:markdownlint/recommended"
+        ],
+        "files": [
+          "*.md"
         ],
         "parser": "eslint-plugin-markdownlint/parser",
         "rules": {
@@ -104,25 +111,25 @@
         }
       }
     ],
-    "root": true,
-    "env": {
-      "node": true,
-      "browser": true,
-      "es2021": true
-    }
+    "root": true
   },
   "lint-staged": {
-    "*.{js,md,ts,tsx}": "eslint --cache --fix --quiet",
-    "*.{css,html,js,json,md,ts,tsx,vue,yaml,yml}": "prettier --write"
+    "!(*.{md,ts,tsx})": [
+      "prettier --ignore-unknown --write"
+    ],
+    "*.{md,ts,tsx}": [
+      "eslint --cache --fix --quiet",
+      "prettier --write"
+    ]
   },
   "prettier": {
     "arrowParens": "avoid",
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ],
     "quoteProps": "consistent",
     "semi": false,
     "singleQuote": true,
-    "tabWidth": 2,
-    "plugins": [
-      "prettier-plugin-tailwindcss"
-    ]
+    "tabWidth": 2
   }
 }
