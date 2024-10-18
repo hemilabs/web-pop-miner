@@ -4,14 +4,14 @@
   "description": "Web PoP miner",
   "main": "index.js",
   "scripts": {
+    "build": "npm run copy-popminer-wasm && tsc && vite build",
+    "copy-popminer-wasm": "mkdir -p ./src/assets && cp ./node_modules/@hemilabs/pop-miner/dist/popminer.wasm ./src/assets/popminer.wasm",
     "dev": "npm run copy-popminer-wasm && vite",
     "format:check": "prettier --check .",
     "lint": "eslint --cache .",
-    "build": "npm run copy-popminer-wasm && tsc && vite build",
-    "preview": "vite preview",
     "test": "vitest",
     "tsc": "tsc --noEmit",
-    "copy-popminer-wasm": "mkdir -p ./src/assets && cp ./node_modules/@hemilabs/pop-miner/dist/popminer.wasm ./src/assets/popminer.wasm"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@hemilabs/pop-miner": "0.4.2",
@@ -54,6 +54,11 @@
   },
   "type": "module",
   "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "node": true
+    },
     "extends": [
       "bloq",
       "prettier"
@@ -63,11 +68,11 @@
     ],
     "overrides": [
       {
-        "files": [
-          "*.md"
-        ],
         "extends": [
           "plugin:markdownlint/recommended"
+        ],
+        "files": [
+          "*.md"
         ],
         "parser": "eslint-plugin-markdownlint/parser",
         "rules": {
@@ -104,12 +109,7 @@
         }
       }
     ],
-    "root": true,
-    "env": {
-      "node": true,
-      "browser": true,
-      "es2021": true
-    }
+    "root": true
   },
   "lint-staged": {
     "!(*.{md,ts,tsx})": [
@@ -122,12 +122,12 @@
   },
   "prettier": {
     "arrowParens": "avoid",
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ],
     "quoteProps": "consistent",
     "semi": false,
     "singleQuote": true,
-    "tabWidth": 2,
-    "plugins": [
-      "prettier-plugin-tailwindcss"
-    ]
+    "tabWidth": 2
   }
 }
