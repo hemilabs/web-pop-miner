@@ -112,8 +112,13 @@
     }
   },
   "lint-staged": {
-    "*.{js,md,ts,tsx}": "eslint --cache --fix --quiet",
-    "*.{css,html,js,json,md,ts,tsx,vue,yaml,yml}": "prettier --write"
+    "!(*.{md,ts,tsx})": [
+      "prettier --ignore-unknown --write"
+    ],
+    "*.{md,ts,tsx}": [
+      "eslint --cache --fix --quiet",
+      "prettier --write"
+    ]
   },
   "prettier": {
     "arrowParens": "avoid",
