@@ -1,12 +1,12 @@
-import { Layout } from 'components/layout'
-import { ExplorerPage } from 'pages/explorer/page'
-import { FundPage } from 'pages/fund/page'
-import { ManagePage } from 'pages/manage/page'
+import { Layout } from 'components/layout';
+import { ExplorerPage } from 'pages/explorer/page';
+import { FundPage } from 'pages/fund/page';
+import { ManagePage } from 'pages/manage/page';
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 const routes = createRoutesFromElements(
   <Route path="/" element={<Layout />}>
@@ -17,6 +17,6 @@ const routes = createRoutesFromElements(
     {/* Step 3 */}
     <Route path="explorer" element={<ExplorerPage />} />
   </Route>,
-)
+);
 
-export const router = createBrowserRouter(routes)
+export const router = createBrowserRouter(routes);

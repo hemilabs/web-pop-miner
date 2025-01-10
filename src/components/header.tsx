@@ -1,26 +1,26 @@
-import { usePopminerContext } from 'context/popminerContext'
-import { PlayButton } from './playButton'
-import { Steps } from './steps'
-import { Link, useLocation } from 'react-router-dom'
-import { HemiLogo } from './hemiLogo'
-import { OpenLinkIcon } from 'icons/openLinkIcon'
-import { LoadingSpinner } from './loadingSpinner'
+import { usePopminerContext } from 'context/popminerContext';
+import { PlayButton } from './playButton';
+import { Steps } from './steps';
+import { Link, useLocation } from 'react-router-dom';
+import { HemiLogo } from './hemiLogo';
+import { OpenLinkIcon } from 'icons/openLinkIcon';
+import { LoadingSpinner } from './loadingSpinner';
 
 export const Header = function () {
-  const { state, setState } = usePopminerContext()
-  const { pathname } = useLocation()
+  const { state, setState } = usePopminerContext();
+  const { pathname } = useLocation();
 
   const TestnetLabel = () => (
     <div className="solid flex items-center justify-center rounded-full border border-orange-200/55 bg-orange-50 px-3 py-1 text-base font-medium leading-normal text-orange-950">
       <span>{!state.rightPanel ? 'PoP Miner -' : ''} Testnet</span>
     </div>
-  )
+  );
 
-  const handlePlay = () => {
-    setState(prevState => ({ ...prevState, active: !prevState.active }))
+  function handlePlay() {
+    setState(prevState => ({ ...prevState, active: !prevState.active }));
   }
 
-  const showTestnetLabel = pathname !== '/' && !state.rightPanel
+  const showTestnetLabel = pathname !== '/' && !state.rightPanel;
 
   return (
     <header className="mx-4 flex items-center justify-between py-4">
@@ -78,5 +78,5 @@ export const Header = function () {
         </>
       )}
     </header>
-  )
-}
+  );
+};

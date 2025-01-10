@@ -1,1 +1,1 @@
-export type Satoshi = number
+export type Satoshi = number;

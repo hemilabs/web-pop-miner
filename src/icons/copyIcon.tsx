@@ -8,4 +8,4 @@ export const CopyIcon = () => (
       strokeWidth={1.333}
     />
   </svg>
-)
+);

@@ -1,15 +1,15 @@
-import { ReactNode } from 'react'
-import { SourceOfPrivateKeyType } from 'types/sourceOfPrivateKeyType'
+import { ReactNode } from 'react';
+import { SourceOfPrivateKeyType } from 'types/sourceOfPrivateKeyType';
 
 type RadioBoxProps = {
-  checked: boolean
-  disabled?: boolean
-  icon: ReactNode
-  id: SourceOfPrivateKeyType
-  title: string
-  subtitle: string
-  onChange: () => void
-}
+  checked: boolean;
+  disabled?: boolean;
+  icon: ReactNode;
+  id: SourceOfPrivateKeyType;
+  title: string;
+  subtitle: string;
+  onChange: () => void;
+};
 export const RadioBox = ({
   checked,
   disabled = false,
@@ -43,4 +43,4 @@ export const RadioBox = ({
       </div>
     </div>
   </div>
-)
+);

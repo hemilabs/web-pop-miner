@@ -1,40 +1,44 @@
-import { StringViewer } from 'components/stringViewer'
-import { WaitingAddress } from './_components/waitingAddress'
-import { AddressFunded } from './_components/addressFunded'
-import { usePopminerContext } from 'context/popminerContext'
-import { useNavigate } from 'react-router-dom'
-import { useBtcBalance } from 'hooks/useBtcBalance'
-import { Satoshi } from 'types/Satoshi'
-import { useEffect } from 'react'
-import { ClaimAssets } from './_components/claimAssets'
-import ConfettiExplosion from 'react-confetti-explosion'
-import { PageWithRightpanel } from 'components/pageWithRightpanel'
+import { StringViewer } from 'components/stringViewer';
+import { WaitingAddress } from './_components/waitingAddress';
+import { AddressFunded } from './_components/addressFunded';
+import { usePopminerContext } from 'context/popminerContext';
+import { useNavigate } from 'react-router-dom';
+import { useBtcBalance } from 'hooks/useBtcBalance';
+import { Satoshi } from 'types/Satoshi';
+import { useEffect } from 'react';
+import { ClaimAssets } from './_components/claimAssets';
+import ConfettiExplosion from 'react-confetti-explosion';
+import { PageWithRightpanel } from 'components/pageWithRightpanel';
 
-const minSatoshis: Satoshi = import.meta.env.VITE_MIN_SATOSHIS || 200000 // 0.002 tBTC -> 200,000 Satoshis
+const minSatoshis: Satoshi = import.meta.env.VITE_MIN_SATOSHIS || 200000; // 0.002 tBTC -> 200,000 Satoshis
 
 export const FundPage = function () {
-  const { state } = usePopminerContext()
-  const navigate = useNavigate()
+  const { state } = usePopminerContext();
+  const navigate = useNavigate();
 
   const { totalBalance, isLoading } = useBtcBalance(
     state.bitcoinPubKeyHash,
     minSatoshis,
     0,
-  )
+  );
 
-  const isAddressFunded = !isLoading && (totalBalance ?? 0) >= minSatoshis
+  const isAddressFunded = !isLoading && (totalBalance ?? 0) >= minSatoshis;
 
-  const handleContinue = () => {
+  function handleContinue() {
     if (isAddressFunded) {
-      navigate('/explorer')
+      navigate('/explorer');
     }
   }
 
-  useEffect(() => {
-    if (!state.bitcoinPubKeyHash) {
-      navigate('/manage')
-    }
-  }, [state.bitcoinPubKeyHash])
+  useEffect(
+    function () {
+      if (!state.bitcoinPubKeyHash) {
+        navigate('/manage');
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state.bitcoinPubKeyHash],
+  );
 
   return (
     <PageWithRightpanel rightPanel={<ClaimAssets />}>
@@ -97,5 +101,5 @@ export const FundPage = function () {
         </div>
       </div>
     </PageWithRightpanel>
-  )
-}
+  );
+};

@@ -1,27 +1,28 @@
-import React, { ReactNode, useEffect } from 'react'
-import { usePopminerContext } from 'context/popminerContext'
+import React, { ReactNode, useEffect } from 'react';
+import { usePopminerContext } from 'context/popminerContext';
 
 interface Props {
-  rightPanel: ReactNode
-  children: ReactNode
+  rightPanel: ReactNode;
+  children: ReactNode;
 }
 
-export const PageWithRightpanel = ({ rightPanel, children }: Props) => {
-  const { setState } = usePopminerContext()
+export function PageWithRightpanel({ rightPanel, children }: Props) {
+  const { setState } = usePopminerContext();
 
-  useEffect(() => {
+  useEffect(function () {
     setState(prevState => ({
       ...prevState,
       rightPanel,
-    }))
+    }));
 
-    return () => {
+    return function () {
       setState(prevState => ({
         ...prevState,
         rightPanel: null,
-      }))
-    }
-  }, [])
+      }));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  return <>{children}</>
+  return <>{children}</>;
 }

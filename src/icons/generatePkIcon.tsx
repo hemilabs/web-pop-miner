@@ -11,4 +11,4 @@ export const GeneratePkIcon = () => (
       strokeWidth={0.5}
     />
   </svg>
-)
+);

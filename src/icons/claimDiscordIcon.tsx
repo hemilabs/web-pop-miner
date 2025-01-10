@@ -7,4 +7,4 @@ export const ClaimDiscordIcon = () => (
       fillOpacity="1"
     />
   </svg>
-)
+);

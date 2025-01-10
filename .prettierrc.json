@@ -1,0 +1,6 @@
+{
+  "arrowParens": "avoid",
+  "quoteProps": "consistent",
+  "singleQuote": true,
+  "plugins": ["prettier-plugin-tailwindcss"]
+}

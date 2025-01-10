@@ -8,6 +8,7 @@
     "copy-popminer-wasm": "mkdir -p ./src/assets && cp ./node_modules/@hemilabs/pop-miner/dist/popminer.wasm ./src/assets/popminer.wasm",
     "dev": "npm run copy-popminer-wasm && vite",
     "format:check": "prettier --check .",
+    "format:fix": "prettier --write .",
     "lint": "eslint --cache .",
     "test": "vitest",
     "tsc": "tsc --noEmit",
@@ -35,17 +36,17 @@
     "@types/rc-tooltip": "3.7.14",
     "@types/react": "18.2.45",
     "@types/react-dom": "18.2.18",
-    "@typescript-eslint/eslint-plugin": "6.16.0",
-    "@typescript-eslint/parser": "6.16.0",
+    "@typescript-eslint/eslint-plugin": "8.18.2",
+    "@typescript-eslint/parser": "8.18.2",
     "@vitejs/plugin-react": "4.3.0",
     "autoprefixer": "10.4.16",
-    "eslint": "8.56.0",
-    "eslint-config-bloq": "4.0.0",
+    "eslint": "8.57.1",
+    "eslint-config-bloq": "4.4.1",
     "eslint-plugin-html": "7.1.0",
     "eslint-plugin-markdownlint": "0.5.0",
-    "husky": "^9.1.6",
+    "husky": "9.1.7",
     "jsdom": "^25.0.1",
-    "lint-staged": "15.2.0",
+    "lint-staged": "15.3.0",
     "prettier": "3.1.1",
     "prettier-plugin-tailwindcss": "0.5.9",
     "tailwindcss": "3.4.0",
@@ -54,82 +55,5 @@
     "vite-tsconfig-paths": "4.3.2",
     "vitest": "^2.1.1"
   },
-  "type": "module",
-  "eslintConfig": {
-    "env": {
-      "browser": true,
-      "es2021": true,
-      "node": true
-    },
-    "extends": [
-      "bloq",
-      "prettier"
-    ],
-    "ignorePatterns": [
-      "dist"
-    ],
-    "overrides": [
-      {
-        "extends": [
-          "plugin:markdownlint/recommended"
-        ],
-        "files": [
-          "*.md"
-        ],
-        "parser": "eslint-plugin-markdownlint/parser",
-        "rules": {
-          "markdownlint/md001": "warn",
-          "markdownlint/md004": [
-            "warn",
-            {
-              "style": "asterisk"
-            }
-          ],
-          "markdownlint/md010": "warn",
-          "markdownlint/md013": "off",
-          "markdownlint/md014": "warn",
-          "markdownlint/md024": [
-            "warn",
-            {
-              "siblings_only": true
-            }
-          ],
-          "markdownlint/md028": "warn",
-          "markdownlint/md029": "warn",
-          "markdownlint/md033": [
-            "warn",
-            {
-              "allowed_elements": [
-                "img"
-              ]
-            }
-          ],
-          "markdownlint/md034": "warn",
-          "markdownlint/md040": "warn",
-          "markdownlint/md041": "warn",
-          "markdownlint/md045": "warn"
-        }
-      }
-    ],
-    "root": true
-  },
-  "lint-staged": {
-    "!(*.{md,ts,tsx})": [
-      "prettier --ignore-unknown --write"
-    ],
-    "*.{md,ts,tsx}": [
-      "eslint --cache --fix --quiet",
-      "prettier --write"
-    ]
-  },
-  "prettier": {
-    "arrowParens": "avoid",
-    "plugins": [
-      "prettier-plugin-tailwindcss"
-    ],
-    "quoteProps": "consistent",
-    "semi": false,
-    "singleQuote": true,
-    "tabWidth": 2
-  }
+  "type": "module"
 }

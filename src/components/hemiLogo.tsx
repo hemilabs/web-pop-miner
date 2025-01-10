@@ -10,4 +10,4 @@ export const HemiLogo = () => (
       strokeWidth={0}
     />
   </svg>
-)
+);

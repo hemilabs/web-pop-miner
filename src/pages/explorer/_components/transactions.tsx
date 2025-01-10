@@ -1,56 +1,54 @@
-import React from 'react'
-import { BlockMarker } from './blockMarker'
-import { Transaction } from '../_hooks/useBtcTransactions'
-import Skeleton from 'react-loading-skeleton'
-import { usePopminerContext } from 'context/popminerContext'
+import React from 'react';
+import { BlockMarker } from './blockMarker';
+import { Transaction } from '../_hooks/useBtcTransactions';
+import Skeleton from 'react-loading-skeleton';
+import { usePopminerContext } from 'context/popminerContext';
 
 type DateTime = {
-  date: string
-  time: string
-}
+  date: string;
+  time: string;
+};
 
-const convertTimestampToDateTime = (
-  timestamp: number | undefined,
-): DateTime => {
-  const date = new Date((timestamp ?? 0) * 1000)
+function convertTimestampToDateTime(timestamp: number | undefined): DateTime {
+  const date = new Date((timestamp ?? 0) * 1000);
   const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
     day: '2-digit',
-  }
-  const dateString = date.toLocaleDateString('en-US', options)
+    month: 'long',
+    year: 'numeric',
+  };
+  const dateString = date.toLocaleDateString('en-US', options);
 
   const timeString = date.toLocaleTimeString('en-US', {
     hour: '2-digit',
-    minute: '2-digit',
     hour12: true,
-  })
+    minute: '2-digit',
+  });
 
   return {
     date: dateString,
     time: timeString,
-  }
+  };
 }
 
-const abbreviateHash = (
+function abbreviateHash(
   hash: string,
   startLength: number = 9,
   endLength: number = 9,
-): string => {
+): string {
   if (hash.length <= startLength + endLength) {
-    return hash
+    return hash;
   }
-  const start = hash.substring(0, startLength)
-  const end = hash.substring(hash.length - endLength)
-  return `${start}...${end}`
+  const start = hash.substring(0, startLength);
+  const end = hash.substring(hash.length - endLength);
+  return `${start}...${end}`;
 }
 
 interface Props {
-  transactions: Transaction[]
+  transactions: Transaction[];
 }
 
-export const TransactionTable = ({ transactions }: Props) => {
-  const { state } = usePopminerContext()
+export function TransactionTable({ transactions }: Props) {
+  const { state } = usePopminerContext();
   return (
     <>
       <div className="relative max-h-[calc(100vh-25rem)] flex-grow overflow-y-auto rounded-t-xl border-l border-r border-t bg-neutral-50 pt-3">
@@ -63,13 +61,13 @@ export const TransactionTable = ({ transactions }: Props) => {
             </tr>
           </thead>
           <tbody>
-            {transactions?.map(({ txid, status, cost }) => {
+            {transactions?.map(function ({ txid, status, cost }) {
               const { date, time } = convertTimestampToDateTime(
                 status.confirmed ? status.blockTime : Date.now(),
-              )
+              );
               const txLink = `${
                 import.meta.env.VITE_PUBLIC_MEMPOOL_API_URL
-              }/tx/${txid}`
+              }/tx/${txid}`;
               return (
                 <tr key={txid} className="border-t bg-white">
                   <td className="px-8 pb-3 pt-4">
@@ -139,7 +137,7 @@ export const TransactionTable = ({ transactions }: Props) => {
                     <span className="ml-1 text-sm text-neutral-500">tBTC</span>
                   </td>
                 </tr>
-              )
+              );
             })}
           </tbody>
         </table>
@@ -156,5 +154,5 @@ export const TransactionTable = ({ transactions }: Props) => {
         <div className="h-3 rounded-b-xl border-b border-l border-r bg-white" />
       )}
     </>
-  )
+  );
 }

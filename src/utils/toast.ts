@@ -1,4 +1,4 @@
-import { Bounce, toast } from 'react-toastify'
+import { Bounce, toast } from 'react-toastify';
 
 export enum ToastType {
   Success = 'success',
@@ -8,8 +8,8 @@ export enum ToastType {
 }
 
 interface Props {
-  message: string
-  type: ToastType
+  message: string;
+  type: ToastType;
 }
 
 /**
@@ -20,16 +20,16 @@ interface Props {
  * @param {string} message - The message to be displayed in the toast.
  * @param {ToastType} type - The type of the toast message (e.g., "success", "error", "warning").
  */
-export const Toast = ({ message, type }: Props) => {
+export function toastNotify({ message, type }: Props) {
   toast(message, {
-    position: 'bottom-left',
     autoClose: 5000,
-    hideProgressBar: true,
     closeOnClick: true,
+    hideProgressBar: true,
     pauseOnHover: true,
+    position: 'bottom-left',
     progress: undefined,
     theme: 'light',
     transition: Bounce,
     type,
-  })
+  });
 }

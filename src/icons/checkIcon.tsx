@@ -8,4 +8,4 @@ export const CheckIcon = () => (
       d="m.75 5.375 3 3 4.5-6.75"
     />
   </svg>
-)
+);

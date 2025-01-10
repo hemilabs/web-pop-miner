@@ -1,15 +1,15 @@
-import React from 'react'
-import Skeleton from 'react-loading-skeleton'
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
 import {
   calculateCostsRewards,
   useCostsRewards,
-} from '../_hooks/useCostsRewards'
+} from '../_hooks/useCostsRewards';
 
-export const EstimatedCostsRewards = () => {
-  const { data, isLoading } = useCostsRewards()
+export function EstimatedCostsRewards() {
+  const { data, isLoading } = useCostsRewards();
   const dataToRender = calculateCostsRewards(
     data || { bitcoinCost: 0, hemiReward: 0 },
-  )
+  );
 
   return (
     <div className="grid w-full grid-cols-3-column-layout pt-4">
@@ -85,5 +85,5 @@ export const EstimatedCostsRewards = () => {
         </div>
       </div>
     </div>
-  )
+  );
 }
