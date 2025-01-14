@@ -1,9 +1,9 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query';
 
 export type CostsRewardsType = {
-  bitcoinCost: number
-  hemiReward: number
-}
+  bitcoinCost: number;
+  hemiReward: number;
+};
 
 /**
  * Fetches costs and rewards asynchronously.
@@ -12,47 +12,43 @@ export type CostsRewardsType = {
  *  costs and rewards from the blockchain.
  * @returns A promise that resolves to the CostsRewards.
  */
-const mockFetchCostsRewards = async (): Promise<CostsRewardsType> => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({ bitcoinCost: -0.00015, hemiReward: 1 })
-    }, 2000)
-  })
-}
+const mockFetchCostsRewards = async (): Promise<CostsRewardsType> =>
+  new Promise(function (resolve) {
+    setTimeout(function () {
+      resolve({ bitcoinCost: -0.00015, hemiReward: 1 });
+    }, 2000);
+  });
 
-export const useCostsRewards = () => {
-  return useQuery<CostsRewardsType>({
+export const useCostsRewards = () =>
+  useQuery<CostsRewardsType>({
     enabled: true,
-    queryFn: mockFetchCostsRewards,
-    queryKey: ['popCostsRewards'],
     meta: {
       errorMessage: 'Failed to fetch costs and rewards',
     },
-  })
-}
+    queryFn: mockFetchCostsRewards,
+    queryKey: ['popCostsRewards'],
+  });
 
-export const calculateCostsRewards = (baseData: CostsRewardsType) => {
-  return [
-    {
-      id: 0,
-      time: '1 Hr',
-      cost: baseData.bitcoinCost.toFixed(5),
-      reward: `+${baseData.hemiReward}`,
-      unit: 'HEMI',
-    },
-    {
-      id: 1,
-      time: '12 Hrs',
-      cost: (baseData.bitcoinCost * 12).toFixed(5),
-      reward: `+${baseData.hemiReward * 12}`,
-      unit: 'HEMI',
-    },
-    {
-      id: 2,
-      time: '24 Hrs',
-      cost: (baseData.bitcoinCost * 24).toFixed(5),
-      reward: `+${baseData.hemiReward * 24}`,
-      unit: 'HEMI',
-    },
-  ]
-}
+export const calculateCostsRewards = (baseData: CostsRewardsType) => [
+  {
+    cost: baseData.bitcoinCost.toFixed(5),
+    id: 0,
+    reward: `+${baseData.hemiReward}`,
+    time: '1 Hr',
+    unit: 'HEMI',
+  },
+  {
+    cost: (baseData.bitcoinCost * 12).toFixed(5),
+    id: 1,
+    reward: `+${baseData.hemiReward * 12}`,
+    time: '12 Hrs',
+    unit: 'HEMI',
+  },
+  {
+    cost: (baseData.bitcoinCost * 24).toFixed(5),
+    id: 2,
+    reward: `+${baseData.hemiReward * 24}`,
+    time: '24 Hrs',
+    unit: 'HEMI',
+  },
+];

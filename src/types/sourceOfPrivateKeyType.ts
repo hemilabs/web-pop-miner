@@ -1,1 +1,1 @@
-export type SourceOfPrivateKeyType = 'generate' | 'import'
+export type SourceOfPrivateKeyType = 'generate' | 'import';

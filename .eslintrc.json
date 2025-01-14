@@ -1,0 +1,34 @@
+{
+  "extends": ["bloq", "prettier"],
+  "ignorePatterns": ["dist"],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2020": true
+  },
+  "overrides": [
+    {
+      "extends": ["bloq/typescript", "prettier"],
+      "files": ["src/**/*.ts"]
+    },
+    {
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react-hooks/recommended",
+        "prettier"
+      ],
+      "files": ["src/**/*.tsx"],
+      "parser": "@typescript-eslint/parser"
+    },
+    {
+      "extends": ["bloq/markdown"],
+      "files": ["*.md"]
+    }
+  ],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "root": true
+}

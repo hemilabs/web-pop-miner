@@ -1,23 +1,23 @@
-import { StringViewer } from 'components/stringViewer'
-import { useEffect, useState } from 'react'
-import { SourceOfPrivateKeyType } from 'types/sourceOfPrivateKeyType'
-import { RadioBox } from './_components/radioBox'
-import { GeneratePkIcon } from 'icons/generatePkIcon'
-import { ImportPkIcon } from 'icons/importPkIcon'
-import { KeyResult, generateKey, parseKey } from '@hemilabs/pop-miner'
-import { usePopminerContext } from 'context/popminerContext'
-import { useNavigate } from 'react-router-dom'
-import { useDebounce } from 'use-debounce'
-import { handleError } from 'utils/handleError'
-import Skeleton from 'react-loading-skeleton'
-import { CardWarningKey } from './_components/cardWarningKey'
-import { CheckBox } from 'components/checkBox'
-import { PageWithRightpanel } from 'components/pageWithRightpanel'
+import { StringViewer } from 'components/stringViewer';
+import { useEffect, useState } from 'react';
+import { SourceOfPrivateKeyType } from 'types/sourceOfPrivateKeyType';
+import { RadioBox } from './_components/radioBox';
+import { GeneratePkIcon } from 'icons/generatePkIcon';
+import { ImportPkIcon } from 'icons/importPkIcon';
+import { KeyResult, generateKey, parseKey } from '@hemilabs/pop-miner';
+import { usePopminerContext } from 'context/popminerContext';
+import { useNavigate } from 'react-router-dom';
+import { useDebounce } from 'use-debounce';
+import { handleError } from 'utils/handleError';
+import Skeleton from 'react-loading-skeleton';
+import { CardWarningKey } from './_components/cardWarningKey';
+import { CheckBox } from 'components/checkBox';
+import { PageWithRightpanel } from 'components/pageWithRightpanel';
 
 interface PrivateKeyProps {
-  source: SourceOfPrivateKeyType
-  handleChange?: (text: string) => void
-  privateKey: string
+  source: SourceOfPrivateKeyType;
+  handleChange?: (text: string) => void;
+  privateKey: string;
 }
 
 const PrivateKey = ({ source, handleChange, privateKey }: PrivateKeyProps) =>
@@ -37,94 +37,100 @@ const PrivateKey = ({ source, handleChange, privateKey }: PrivateKeyProps) =>
       text={privateKey}
       title="Private Key"
     />
-  )
+  );
 
-const initAndExtractKeyData = (keyAction: () => Promise<KeyResult>) => {
-  return keyAction()
-}
+const initAndExtractKeyData = (keyAction: () => Promise<KeyResult>) =>
+  keyAction();
 
-const generateNewKey = async () => {
-  return initAndExtractKeyData(() => generateKey({ network: 'testnet3' }))
-}
+const generateNewKey = async () =>
+  initAndExtractKeyData(() => generateKey({ network: 'testnet3' }));
 
-const parseNewKey = async (key: string) => {
-  return initAndExtractKeyData(() =>
+const parseNewKey = async (key: string) =>
+  initAndExtractKeyData(() =>
     parseKey({ network: 'testnet3', privateKey: key }),
-  )
-}
+  );
 
 export const ManagePage = function () {
-  const navigate = useNavigate()
-  const { state, setState } = usePopminerContext()
-  const [savedMyPrivateKey, setSavedMyPrivateKey] = useState(false)
+  const navigate = useNavigate();
+  const { state, setState } = usePopminerContext();
+  const [savedMyPrivateKey, setSavedMyPrivateKey] = useState(false);
   const [sourceOfPrivateKey, setSourceOfPrivateKey] =
-    useState<SourceOfPrivateKeyType>('generate')
-  const [debouncedPrivateKey] = useDebounce(state.privateKey, 400)
+    useState<SourceOfPrivateKeyType>('generate');
+  const [debouncedPrivateKey] = useDebounce(state.privateKey, 400);
 
   const isValidPrivateKey =
-    state.validPrivateKey && state.privateKey && savedMyPrivateKey
+    state.validPrivateKey && state.privateKey && savedMyPrivateKey;
 
-  const updateValidPrivateKeyState = (valid: boolean) => {
+  function updateValidPrivateKeyState(valid: boolean) {
     setState(prevState => ({
       ...prevState,
       validPrivateKey: valid,
-    }))
+    }));
   }
 
-  const updateKeyState = async (keyPromise: Promise<any>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async function updateKeyState(keyPromise: Promise<any>) {
     try {
-      const keyData = await keyPromise
+      const keyData = await keyPromise;
       setState(prevState => ({
         ...prevState,
         ...keyData,
-      }))
-      updateValidPrivateKeyState(true)
+      }));
+      updateValidPrivateKeyState(true);
     } catch (error) {
-      handleError('Error', error as Error)
-      updateValidPrivateKeyState(false)
+      handleError('Error', error as Error);
+      updateValidPrivateKeyState(false);
     }
   }
 
-  useEffect(() => {
-    if (state.wasmInitialized) {
-      updateKeyState(generateNewKey())
-    }
-  }, [state.wasmInitialized])
-
-  useEffect(() => {
-    if (debouncedPrivateKey && !state.validPrivateKey) {
-      if (sourceOfPrivateKey === 'generate') {
-        updateKeyState(generateNewKey())
-      } else {
-        updateKeyState(parseNewKey(state.privateKey))
+  useEffect(
+    function () {
+      if (state.wasmInitialized) {
+        updateKeyState(generateNewKey());
       }
-    }
-  }, [debouncedPrivateKey, sourceOfPrivateKey])
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state.wasmInitialized],
+  );
 
-  const handleSourceChange = async (source: SourceOfPrivateKeyType) => {
-    setSourceOfPrivateKey(source)
+  useEffect(
+    function () {
+      if (debouncedPrivateKey && !state.validPrivateKey) {
+        if (sourceOfPrivateKey === 'generate') {
+          updateKeyState(generateNewKey());
+        } else {
+          updateKeyState(parseNewKey(state.privateKey));
+        }
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [debouncedPrivateKey, sourceOfPrivateKey],
+  );
+
+  async function handleSourceChange(source: SourceOfPrivateKeyType) {
+    setSourceOfPrivateKey(source);
 
     if (source === 'generate') {
-      updateKeyState(generateNewKey())
+      updateKeyState(generateNewKey());
     } else {
       setState(prevState => ({
         ...prevState,
         privateKey: '',
-      }))
+      }));
     }
   }
 
-  const handlePrivateKeyChange = (text: string) => {
+  function handlePrivateKeyChange(text: string) {
     setState(prevState => ({
       ...prevState,
       privateKey: text,
-    }))
-    updateValidPrivateKeyState(false)
+    }));
+    updateValidPrivateKeyState(false);
   }
 
-  const handleContinue = () => {
+  function handleContinue() {
     if (isValidPrivateKey) {
-      navigate('/fund')
+      navigate('/fund');
     }
   }
 
@@ -182,7 +188,7 @@ export const ManagePage = function () {
         </button>
       </div>
     </>
-  )
+  );
 
   const renderLoadingContent = () => (
     <div className="flex w-540 flex-col gap-y-2">
@@ -208,7 +214,7 @@ export const ManagePage = function () {
         <Skeleton height={60} />
       </div>
     </div>
-  )
+  );
 
   return (
     <PageWithRightpanel rightPanel={<CardWarningKey />}>
@@ -224,5 +230,5 @@ export const ManagePage = function () {
         </div>
       </div>
     </PageWithRightpanel>
-  )
-}
+  );
+};

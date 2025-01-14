@@ -1,6 +1,6 @@
-import { CopyIcon } from 'icons/copyIcon'
-import { useState } from 'react'
-import { Toast, ToastType } from 'utils/toast'
+import { CopyIcon } from 'icons/copyIcon';
+import { useState } from 'react';
+import { toastNotify, ToastType } from 'utils/toast';
 
 const ViewTextIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none">
@@ -12,17 +12,17 @@ const ViewTextIcon = () => (
       d="M2.653 5.482A6.985 6.985 0 0 0 1.29 8a7.004 7.004 0 0 0 8.62 4.737M4.151 4.152A7.004 7.004 0 0 1 14.71 7.999a7.014 7.014 0 0 1-2.862 3.849M4.152 4.152 2 2m2.152 2.152 2.433 2.433m5.263 5.263L14 14m-2.152-2.152L9.414 9.415a2 2 0 0 0-2.828-2.829m2.828 2.828L6.586 6.587"
     />
   </svg>
-)
+);
 
 type Props = {
-  defaultIsVisible?: boolean
-  enableCopyToClipboard?: boolean
-  enableEditing?: boolean
-  placeholder?: string
-  text: string
-  title: string
-  onTextChange?: (text: string) => void
-}
+  defaultIsVisible?: boolean;
+  enableCopyToClipboard?: boolean;
+  enableEditing?: boolean;
+  placeholder?: string;
+  text: string;
+  title: string;
+  onTextChange?: (text: string) => void;
+};
 
 export const StringViewer = function ({
   text,
@@ -33,24 +33,24 @@ export const StringViewer = function ({
   enableEditing = false,
   onTextChange,
 }: Props) {
-  const [isVisible, setIsVisible] = useState(defaultIsVisible)
+  const [isVisible, setIsVisible] = useState(defaultIsVisible);
 
-  const handleToggleVisibility = () => {
-    setIsVisible(!isVisible)
+  function handleToggleVisibility() {
+    setIsVisible(!isVisible);
   }
 
-  const handleCopyToClipboard = async () => {
+  async function handleCopyToClipboard() {
     try {
-      await navigator.clipboard.writeText(text)
-      Toast({ message: 'Copied to clipboard', type: ToastType.Success })
+      await navigator.clipboard.writeText(text);
+      toastNotify({ message: 'Copied to clipboard', type: ToastType.Success });
     } catch (err) {
-      Toast({ message: `Failed to copy: ${err}`, type: ToastType.Error })
+      toastNotify({ message: `Failed to copy: ${err}`, type: ToastType.Error });
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (onTextChange) {
-      onTextChange(e.target.value)
+      onTextChange(e.target.value);
     }
   }
 
@@ -89,5 +89,5 @@ export const StringViewer = function ({
         )}
       </div>
     </div>
-  )
-}
+  );
+};

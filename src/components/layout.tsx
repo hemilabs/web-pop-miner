@@ -1,14 +1,14 @@
-import { Outlet, useLocation } from 'react-router-dom'
-import { Footer } from './footer'
-import { Header } from './header'
-import { DesignForDesktop } from './designForDesktop'
-import { IntroPage } from 'pages/intro/page'
-import { usePopminerContext } from 'context/popminerContext'
-import { HelpSection } from './helpSection'
-import { ReactNode } from 'react'
+import { Outlet, useLocation } from 'react-router-dom';
+import { Footer } from './footer';
+import { Header } from './header';
+import { DesignForDesktop } from './designForDesktop';
+import { IntroPage } from 'pages/intro/page';
+import { usePopminerContext } from 'context/popminerContext';
+import { HelpSection } from './helpSection';
+import { ReactNode } from 'react';
 
 interface RightPanelProps {
-  content: ReactNode
+  content: ReactNode;
 }
 
 const RightPanel = ({ content }: RightPanelProps) => (
@@ -16,11 +16,11 @@ const RightPanel = ({ content }: RightPanelProps) => (
     <div className="flex flex-grow items-center justify-center">{content}</div>
     <HelpSection />
   </div>
-)
+);
 
 export const Layout = function () {
-  const { pathname } = useLocation()
-  const { state } = usePopminerContext()
+  const { pathname } = useLocation();
+  const { state } = usePopminerContext();
 
   return (
     <div
@@ -56,5 +56,5 @@ export const Layout = function () {
         </>
       )}
     </div>
-  )
-}
+  );
+};

@@ -8,4 +8,4 @@ export const WarningIcon = () => (
       fillOpacity="1"
     />
   </svg>
-)
+);

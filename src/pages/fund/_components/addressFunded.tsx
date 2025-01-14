@@ -1,4 +1,4 @@
-import { CheckIcon } from 'icons/checkIcon'
+import { CheckIcon } from 'icons/checkIcon';
 
 export const AddressFunded = () => (
   <div className="flex items-center justify-center">
@@ -9,4 +9,4 @@ export const AddressFunded = () => (
       Your address is funded
     </p>
   </div>
-)
+);

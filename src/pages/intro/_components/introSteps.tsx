@@ -1,7 +1,7 @@
 interface Props {
-  position: number
-  textBold: string
-  text: string
+  position: number;
+  textBold: string;
+  text: string;
 }
 
 export const IntroSteps = ({ position, textBold, text }: Props) => (
@@ -18,4 +18,4 @@ export const IntroSteps = ({ position, textBold, text }: Props) => (
       {text}
     </p>
   </div>
-)
+);

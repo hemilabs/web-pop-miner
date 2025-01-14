@@ -1,7 +1,7 @@
-import RcTooltip from 'rc-tooltip'
-import { TooltipProps } from 'rc-tooltip/lib/Tooltip'
+import RcTooltip from 'rc-tooltip';
+import { TooltipProps } from 'rc-tooltip/lib/Tooltip';
 
-import 'rc-tooltip/assets/bootstrap_white.css'
+import 'rc-tooltip/assets/bootstrap_white.css';
 
 export const Tooltip = function ({
   disabled = false,
@@ -14,7 +14,7 @@ export const Tooltip = function ({
   trigger = ['click', 'hover', 'focus'],
 }: TooltipProps & { disabled?: boolean }) {
   if (!overlay || disabled) {
-    return <>{children}</>
+    return <>{children}</>;
   }
 
   return (
@@ -33,5 +33,5 @@ export const Tooltip = function ({
     >
       <div className="cursor-pointer">{children}</div>
     </RcTooltip>
-  )
-}
+  );
+};

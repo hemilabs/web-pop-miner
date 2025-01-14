@@ -8,4 +8,4 @@ export const GoToIcon = () => (
       fillOpacity="1"
     />
   </svg>
-)
+);

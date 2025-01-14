@@ -1,36 +1,38 @@
-import { useCallback } from 'react'
+/* eslint-disable arrow-body-style */
+import { useCallback } from 'react';
 
 export interface BitcoinKey {
-  address: string
-  privateKey: string
+  address: string;
+  privateKey: string;
 }
 
 export const useBitcoinTestnetKey = (): {
-  generateKey: () => BitcoinKey
+  generateKey: () => BitcoinKey;
   checkPrivateKey: (privateKey: string) => {
-    isValid: boolean
-    result: BitcoinKey
-  }
+    isValid: boolean;
+    result: BitcoinKey | null;
+  };
 } => {
-  const generateKey = useCallback(() => {
-    // TO-DO - Implement the generation of a Bitcoin Testnet key using Joshua package
-    // For now, we will return a dummy key
-    // Issue #4: Connect simplified manage page to WASM Go library
-    const address = 'n2eMqTT929pb1RDNuqEnxdaLau1rxy3efi'
-    const privateKey = 'n2eMqTT929pb1RDNuqEnxdaLau1rxy3efi'
+  const generateKey = useCallback((): BitcoinKey => {
+    const address = 'n2eMqTT929pb1RDNuqEnxdaLau1rxy3efi';
+    const privateKey = 'cTmZm6UtR4Sio3cW7WZj9usHTziDLJpYhuePMtB3RLUnxKX6QDPZ';
 
-    return { address, privateKey }
-  }, [])
+    return { address, privateKey };
+  }, []);
 
-  const checkPrivateKey = useCallback((privateKey: string) => {
-    // TO-DO - Implement the validation of a Bitcoin Testnet private key and return the public address
-    // For now, we will use dummy data
-    // Issue #4: Connect simplified manage page to WASM Go library
-    const isValid = privateKey === 'n2eMqTT929pb1RDNuqEnxdaLau1rxy3efi'
-    const address = isValid ? 'n2eMqTT929pb1RDNuqEnxdaLau1rxy3efi' : ''
+  const checkPrivateKey = useCallback(
+    (privateKey: string): { isValid: boolean; result: BitcoinKey | null } => {
+      const isValid =
+        privateKey === 'cTmZm6UtR4Sio3cW7WZj9usHTziDLJpYhuePMtB3RLUnxKX6QDPZ';
+      const address = isValid ? 'n2eMqTT929pb1RDNuqEnxdaLau1rxy3efi' : null;
 
-    return { isValid, result: { address, privateKey } }
-  }, [])
+      return {
+        isValid,
+        result: isValid && address ? { address, privateKey } : null,
+      };
+    },
+    [],
+  );
 
-  return { generateKey, checkPrivateKey }
-}
+  return { checkPrivateKey, generateKey };
+};

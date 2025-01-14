@@ -1,8 +1,8 @@
-import { GoToIcon } from 'icons/goToIcon'
+import { GoToIcon } from 'icons/goToIcon';
 
 interface HelpLinkProps {
-  href: string
-  label: string
+  href: string;
+  label: string;
 }
 
 const HelpLink = ({ href, label }: HelpLinkProps) => (
@@ -15,7 +15,7 @@ const HelpLink = ({ href, label }: HelpLinkProps) => (
     <span className="ml-4 mr-1 text-orange-500">{label}</span>
     <GoToIcon />
   </a>
-)
+);
 
 export const HelpSection = () => (
   <p className="flex items-center justify-center pb-4 text-center text-sm font-normal text-zinc-500">
@@ -28,4 +28,4 @@ export const HelpSection = () => (
     />
     <HelpLink href={import.meta.env.VITE_HEMI_DISCORD_URL} label="Contact us" />
   </p>
-)
+);

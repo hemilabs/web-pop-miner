@@ -1,5 +1,5 @@
-import { CheckIcon } from 'icons/checkIcon'
-import React from 'react'
+import { CheckIcon } from 'icons/checkIcon';
+import React from 'react';
 
 /**
  * Props for the Stepper component are defined here as an interface.
@@ -8,14 +8,14 @@ import React from 'react'
  * The steps prop is an array of strings that represent the steps in the stepper.
  */
 interface Props {
-  currentStep: number
-  steps: string[]
+  currentStep: number;
+  steps: string[];
 }
 
 export const Stepper = function ({ currentStep, steps }: Props) {
-  const totalFutureSteps = steps.length - currentStep - 1
-  const currentText = steps[currentStep] || 'No steps found'
-  const currentStepText = currentStep + 1
+  const totalFutureSteps = steps.length - currentStep - 1;
+  const currentText = steps[currentStep] || 'No steps found';
+  const currentStepText = currentStep + 1;
 
   return (
     <div className="flex items-center">
@@ -59,5 +59,5 @@ export const Stepper = function ({ currentStep, steps }: Props) {
         <div className="h-[1.5px] w-10 bg-gradient-to-l from-transparent to-emerald-500" />
       )}
     </div>
-  )
-}
+  );
+};

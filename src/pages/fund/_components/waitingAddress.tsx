@@ -1,4 +1,4 @@
-import { LoadingSpinner } from 'components/loadingSpinner'
+import { LoadingSpinner } from 'components/loadingSpinner';
 
 export const WaitingAddress = () => (
   <div className="flex items-center justify-center">
@@ -7,4 +7,4 @@ export const WaitingAddress = () => (
       Waiting for this address to get enough funds...
     </p>
   </div>
-)
+);

@@ -16,7 +16,7 @@ const DesktopFrameIcon = () => (
     </svg>
     <div className="pointer-events-none absolute left-0 top-0 h-full w-full bg-gradient-to-b from-transparent to-neutral-50"></div>
   </div>
-)
+);
 
 const InfoIcon = () => (
   <svg
@@ -39,32 +39,30 @@ const InfoIcon = () => (
       d="M11.25 7.25h1.5v1.5h-1.5z"
     />
   </svg>
-)
+);
 
-export const DesignForDesktop = function () {
-  return (
-    <div className="flex flex-col items-center justify-center p-4">
-      <div className="relative">
-        <DesktopFrameIcon />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div
-            className="absolute h-24 w-48 rounded-t-lg border border-neutral-200 bg-neutral-50"
-            style={{
-              borderImage: 'linear-gradient(to bottom, #E5E7EB, transparent) 1',
-            }}
-          />
-          <div className="absolute h-8 w-8 rounded-full border border-neutral-200 bg-neutral-100" />
-          <InfoIcon />
-        </div>
-      </div>
-      <div className="text-center">
-        <h1 className="text-2xl font-medium text-neutral-950">
-          Designed for Desktop
-        </h1>
-        <p className="mt-2 text-lg font-normal text-neutral-500">
-          Please switch to a computer to begin PoP Mining
-        </p>
+export const DesignForDesktop = () => (
+  <div className="flex flex-col items-center justify-center p-4">
+    <div className="relative">
+      <DesktopFrameIcon />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div
+          className="absolute h-24 w-48 rounded-t-lg border border-neutral-200 bg-neutral-50"
+          style={{
+            borderImage: 'linear-gradient(to bottom, #E5E7EB, transparent) 1',
+          }}
+        />
+        <div className="absolute h-8 w-8 rounded-full border border-neutral-200 bg-neutral-100" />
+        <InfoIcon />
       </div>
     </div>
-  )
-}
+    <div className="text-center">
+      <h1 className="text-2xl font-medium text-neutral-950">
+        Designed for Desktop
+      </h1>
+      <p className="mt-2 text-lg font-normal text-neutral-500">
+        Please switch to a computer to begin PoP Mining
+      </p>
+    </div>
+  </div>
+);

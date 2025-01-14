@@ -7,4 +7,4 @@ export const ImportPkIcon = () => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);

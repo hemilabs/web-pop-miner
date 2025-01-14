@@ -1,9 +1,9 @@
-import { Chain } from 'enums/chain'
-import { CopyIcon } from 'icons/copyIcon'
-import { OpenLinkIcon } from 'icons/openLinkIcon'
-import React, { ReactNode } from 'react'
-import Skeleton from 'react-loading-skeleton'
-import { Toast, ToastType } from 'utils/toast'
+import { Chain } from 'enums/chain';
+import { CopyIcon } from 'icons/copyIcon';
+import { OpenLinkIcon } from 'icons/openLinkIcon';
+import React, { ReactNode } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import { toastNotify, ToastType } from 'utils/toast';
 
 /**
  * Props for the ChainBalance component.
@@ -16,32 +16,32 @@ import { Toast, ToastType } from 'utils/toast'
  * @property {void} useBalance - The useBalance function.
  */
 interface Props {
-  title: string
-  chain: Chain
-  chainIcon?: ReactNode
-  address: string
-  explorerUrl: string
-  useBalance: () => { totalLabelBalance?: string; isLoading: boolean }
+  title: string;
+  chain: Chain;
+  chainIcon?: ReactNode;
+  address: string;
+  explorerUrl: string;
+  useBalance: () => { totalLabelBalance?: string; isLoading: boolean };
 }
 
-const handleCopyToClipboard = async (text: string) => {
+const handleCopyToClipboard = async function (text: string) {
   try {
-    await navigator.clipboard.writeText(text)
-    Toast({ message: 'Copied to clipboard', type: ToastType.Success })
+    await navigator.clipboard.writeText(text);
+    toastNotify({ message: 'Copied to clipboard', type: ToastType.Success });
   } catch (err) {
-    Toast({ message: `Failed to copy: ${err}`, type: ToastType.Error })
+    toastNotify({ message: `Failed to copy: ${err}`, type: ToastType.Error });
   }
-}
+};
 
-export const ChainBalance = ({
+export function ChainBalance({
   title,
   chain,
   chainIcon,
   address,
   explorerUrl,
   useBalance,
-}: Props) => {
-  const { totalLabelBalance, isLoading } = useBalance()
+}: Props) {
+  const { totalLabelBalance, isLoading } = useBalance();
 
   return (
     <div className="min-w-80 flex-1 rounded-xl border border-solid border-slate-100 bg-white p-4">
@@ -77,5 +77,5 @@ export const ChainBalance = ({
         </div>
       </div>
     </div>
-  )
+  );
 }
