@@ -159,3 +159,7 @@ The following environment variables configure various aspects of the application
 - **VITE_PUBLIC_MEMPOOL_API_URL**  
   The URL of the mempool API to use.  
   _Example:_ `https://mempool.space/testnet`
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
