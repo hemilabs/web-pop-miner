@@ -3,34 +3,35 @@
 # which can be found in the LICENSE file.
 
 # GitHub Actions workflow to deploy the Web PoP Miner to the testnet prod environment.
-name: "Testnet"
+name: Testnet
+
 on:
   push:
-    tags: [ "v*.*.*" ]
+    tags:
+      - v*.*.*
 
 concurrency:
-  group: "testnet-deploy-${{ github.event.number || github.ref }}"
+  group: testnet-deploy-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   # Prepare to deploy and release
   prepare:
-    name: "Prepare"
-    runs-on: "ubuntu-latest"
+    name: Prepare
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     outputs:
-      version: "${{ steps.data.outputs.version }}"
-      tag: "${{ steps.data.outputs.tag }}"
-      version_type: "${{ steps.version.outputs.type }}"
+      version: ${{ steps.data.outputs.version }}
+      tag: ${{ steps.data.outputs.tag }}
+      version_type: ${{ steps.data.outputs.type }}
     steps:
-      - name: "Checkout repository"
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-
-      - name: "Retrieve build data"
-        id: "data"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Retrieve build data
+        id: data
         env:
-          RAW_VERSION: "${{ github.ref_name }}"
+          RAW_VERSION: ${{ github.ref_name }}
         run: |
           VERSION=$(echo "$RAW_VERSION" | sed -e 's/^v//')
           TAG=$(echo "$RAW_VERSION" | sed -E 's/^([^v])/v\1/g')
@@ -46,16 +47,17 @@ jobs:
 
   # Build and push Docker image
   docker:
-    name: "Docker"
-    uses: hemilabs/actions/.github/workflows/docker.yml@main
-    needs: [ "prepare" ]
+    name: Docker
+    uses: hemilabs/actions/.github/workflows/docker.yml@ce05a847148167bf33fe135713e77c3d2497ab52
+    needs:
+      - prepare
     permissions:
       contents: read
       packages: write # Needed to push to the GitHub Container Registry
     with:
-      version: "${{ needs.prepare.outputs.version }}"
+      version: ${{ needs.prepare.outputs.version }}
       context: "."
-      file: "./Dockerfile"
+      file: ./Dockerfile
       dockerhub: true
       tags: |
         hemilabs/popm-web:latest
@@ -65,22 +67,24 @@ jobs:
         ghcr.io/hemilabs/popm-web:${{ needs.prepare.outputs.tag }}
         ghcr.io/hemilabs/popm-web:${{ github.sha }}
     secrets:
-      DOCKERHUB_USERNAME: "${{ secrets.DOCKERHUB_USERNAME }}"
-      DOCKERHUB_PASSWORD: "${{ secrets.DOCKERHUB_TOKEN }}"
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
 
   # Deploy to Kubernetes cluster
   deploy:
-    name: "Deploy to testnet"
-    uses: hemilabs/actions/.github/workflows/deploy-kustomize.yml@main
-    needs: [ "prepare", "docker" ]
+    name: Deploy to testnet
+    uses: hemilabs/actions/.github/workflows/deploy-kustomize.yml@ce05a847148167bf33fe135713e77c3d2497ab52
+    needs:
+      - prepare
+      - docker
     permissions:
       contents: read
     with:
-      namespace: "popm-web"
-      kustomize: "./kubernetes/kustomize/overlays/testnet/"
-      image: "hemilabs/popm-web:${{ needs.prepare.outputs.tag }}"
-      environment-name: "testnet"
-      environment-url: "https://pop-miner.hemi.xyz/"
+      namespace: popm-web
+      kustomize: ./kubernetes/kustomize/overlays/testnet/
+      image: hemilabs/popm-web:${{ needs.prepare.outputs.tag }}
+      environment-name: testnet
+      environment-url: https://pop-miner.${{ vars.HEMI_DOMAIN_PROD }}/
     secrets:
-      KUBECONFIG: "${{ secrets.VKE_TESTNET_KUBECONFIG }}"
-      KUBECONFIG_CONTEXT: "${{ secrets.VKE_TESTNET_KUBECONFIG_CONTEXT }}"
+      KUBECONFIG: ${{ secrets.VKE_TESTNET_KUBECONFIG }}
+      KUBECONFIG_CONTEXT: ${{ secrets.VKE_TESTNET_KUBECONFIG_CONTEXT }}

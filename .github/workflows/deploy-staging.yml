@@ -3,49 +3,52 @@
 # which can be found in the LICENSE file.
 
 # GitHub Actions workflow to deploy the Web PoP Miner to the staging environment.
-name: "Staging"
+name: Staging
+
 on:
   push:
-    branches: [ "main" ]
+    branches: 
+      - main
   workflow_dispatch:
 
 concurrency:
-  group: "staging-deploy-${{ github.event.number || github.ref }}"
+  group: staging-deploy-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   # Build and push Docker image
   docker:
-    name: "Docker"
-    uses: hemilabs/actions/.github/workflows/docker.yml@main
+    name: Docker
+    uses: hemilabs/actions/.github/workflows/docker.yml@ce05a847148167bf33fe135713e77c3d2497ab52
     permissions:
       contents: read
       packages: write # Needed to push to the GitHub Container Registry
     with:
-      version: "${{ github.sha }}"
+      version: ${{ github.sha }}
       context: "."
-      file: "./Dockerfile"
+      file: ./Dockerfile
       dockerhub: true
       tags: |
         hemilabs/popm-web:${{ github.sha }}
         ghcr.io/hemilabs/popm-web:${{ github.sha }}
     secrets:
-      DOCKERHUB_USERNAME: "${{ secrets.DOCKERHUB_USERNAME }}"
-      DOCKERHUB_PASSWORD: "${{ secrets.DOCKERHUB_TOKEN }}"
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
 
   # Deploy to Kubernetes cluster
   deploy:
-    name: "Deploy to staging"
-    uses: hemilabs/actions/.github/workflows/deploy-kustomize.yml@main
-    needs: [ "docker" ]
+    name: Deploy to staging
+    uses: hemilabs/actions/.github/workflows/deploy-kustomize.yml@ce05a847148167bf33fe135713e77c3d2497ab52
+    needs: 
+      - docker
     permissions:
       contents: read
     with:
-      namespace: "popm-web"
-      kustomize: "./kubernetes/kustomize/overlays/staging/"
-      image: "hemilabs/popm-web:${{ github.sha }}"
-      environment-name: "staging"
-      environment-url: "https://pop-miner.letshamsterdance.xyz/"
+      namespace: popm-web
+      kustomize: ./kubernetes/kustomize/overlays/staging/
+      image: hemilabs/popm-web:${{ github.sha }}
+      environment-name: staging
+      environment-url: https://pop-miner.${{ vars.HEMI_DOMAIN_STAGING }}/
     secrets:
-      KUBECONFIG: "${{ secrets.VKE_STAGING_KUBECONFIG }}"
-      KUBECONFIG_CONTEXT: "${{ secrets.VKE_STAGING_KUBECONFIG_CONTEXT }}"
+      KUBECONFIG: ${{ secrets.VKE_STAGING_KUBECONFIG }}
+      KUBECONFIG_CONTEXT: ${{ secrets.VKE_STAGING_KUBECONFIG_CONTEXT }}
