@@ -45,7 +45,8 @@ jobs:
       kustomize: "./kubernetes/kustomize/overlays/staging/"
       image: "hemilabs/popm-web:${{ github.sha }}"
       environment-name: "staging"
-      environment-url: "https://pop-miner.letshamsterdance.xyz/"
+      preapply: |
+        sed -i -e 's/HEMI_STAGING_DOMAIN/${{ vars.HEMI_DOMAIN_STAGING }}/g' staging-patch.yaml
     secrets:
       KUBECONFIG: "${{ secrets.VKE_STAGING_KUBECONFIG }}"
       KUBECONFIG_CONTEXT: "${{ secrets.VKE_STAGING_KUBECONFIG_CONTEXT }}"
