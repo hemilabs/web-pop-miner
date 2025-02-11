@@ -1,1 +1,5 @@
 * @ArturDolzan
+
+# Deployment files
+/.github/workflows/deploy-*.yml @hemilabs/devops
+/kubernetes/ @hemilabs/devops
